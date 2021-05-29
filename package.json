@@ -10,6 +10,11 @@
   },
   "author": "Yuriy Shilenkov",
   "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-typescript": "^7.13.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
     "clean-webpack-plugin": "^4.0.0-alpha.0",
@@ -23,10 +28,12 @@
     "mini-css-extract-plugin": "^1.6.0",
     "sass": "^1.32.12",
     "sass-loader": "^11.0.1",
-    "ts-loader": "^9.1.1",
-    "typescript": "^4.2.4",
+    "typescript": "^4.3.2",
     "webpack": "^5.36.2",
     "webpack-cli": "^4.6.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "babel-loader": "^8.2.2"
   }
 }

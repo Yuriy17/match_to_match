@@ -29,9 +29,10 @@ module.exports = ({ development }) => ({
   module: {
     rules: [
       {
-        test: /\.[tj]s$/,
-        use: 'ts-loader',
+        // Include ts, tsx, js, and jsx files.
+        test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
+        loader: 'babel-loader',
       },
       {
         test: /\.(?:ico|gif|png|jpg|jpeg|svg|webp)$/i,

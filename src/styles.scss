@@ -7,64 +7,35 @@
 body {
   min-height: 100vh;
   display: flex;
-  background: #C33764;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #1D2671, #C33764);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #1D2671, #C33764); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  
+  flex-direction: column;
+  justify-content: space-between;
+  background: #c33764; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #1d2671,
+    #c33764
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #1d2671,
+    #c33764
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-.memory-game {
-  width: 640px;
-  margin: auto;
+header,
+footer {
+  -webkit-box-shadow: 0px 5px 5px -5px rgb(34 60 80 / 60%);
+  -moz-box-shadow: 0px 5px 5px -5px rgba(34, 60, 80, 0.6);
+  box-shadow: 0px 5px 5px -5px rgb(34 60 80 / 60%);
+  height: 40px;
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
-  perspective: 1000px;
-}
-
-.memory-card {
-  display: flex;
+  justify-content: center;
   align-items: center;
-  width: calc(25% - 23px);
-  height: calc(33.333% - 10px);
-  min-width: 140px;
-  min-height: 207px;
-  border-radius: 12px;
-  margin: 5px;
-  position: relative;
-  transform: scale(1);
-  transform-style: preserve-3d;
-  transition: transform .5s;
-  box-shadow: 1px 1px 1px rgba(0,0,0,.3);
-  background: rgb(0, 0, 0, 0.15);
-}
-
-.memory-card:active {
-  transform: scale(0.97);
-  transition: transform .2s;
-}
-
-.memory-card.flip {
-  transform: rotateY(180deg);
-}
-
-.front-face,
-.back-face {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  position: absolute;
-  backface-visibility: hidden;
-  border-radius: 12px;
-}
-
-.front-face {
-  transform: rotateY(180deg);
-  background: transparent;
-  border: 4px solid #e2a540;
-
-}
-
-.back-face {
-  background: transparent;
+  &,.footer-text{
+    color: #fff;
+    a {
+      color: #da982b;
+    }
+  }
 }

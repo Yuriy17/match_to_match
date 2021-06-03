@@ -13,7 +13,7 @@ export default class Card extends BaseComponent {
   ) {
     super(
       'div',
-      ['memory-card'],
+      ['game__card'],
       [
         [
           'data-image',

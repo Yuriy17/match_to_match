@@ -1,4 +1,4 @@
-.memory-card {
+.game__card {
   display: flex;
   align-items: center;
   min-width: 123px;
@@ -11,16 +11,23 @@
   transition: transform .5s;
   box-shadow: 1px 1px 1px rgba(0,0,0,.3);
   background: rgb(0, 0, 0, 0.15);
+  &_four {
+    min-width: 157px;
+    min-height: 232px;
+  }
+  &_six {
+    min-width: 123px;
+    min-height: 182px;
+  }
+  &:active {
+    transform: scale(0.97);
+    transition: transform .2s;
+  }
+  &.flip {
+    transform: rotateY(180deg);
+  }
 }
 
-.memory-card:active {
-  transform: scale(0.97);
-  transition: transform .2s;
-}
-
-.memory-card.flip {
-  transform: rotateY(180deg);
-}
 
 .front-face,
 .back-face {
@@ -38,7 +45,6 @@
   transform: rotateY(180deg);
   background: transparent;
   border: 4px solid #e2a540;
-
 }
 
 .back-face {

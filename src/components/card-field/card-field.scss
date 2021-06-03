@@ -1,8 +1,8 @@
-.memory-game {
-  max-width: 640px;
+.game__cards {
+  max-width: 667px;
   margin: auto;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   flex-wrap: wrap;
   perspective: 1000px;
 }

@@ -1,11 +1,20 @@
 import { ImageCategoryModel } from '../models/image-category-models';
 import Game from './game/game';
+import Router from './router/router';
 
 export default class App {
   private readonly game: Game;
 
+  private readonly router: Router;
+
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game();
+    this.router = new Router();
+    this.initRouter();
+    this.initLayout();
+  }
+
+  initLayout = ():void => {
     this.rootElement.appendChild(this.game.element);
     this.rootElement.insertAdjacentHTML(
       'beforebegin',
@@ -22,9 +31,24 @@ export default class App {
     </footer>
     `,
     );
-  }
+  };
 
-  async start() {
+  initRouter = ():void => {
+    this.router
+      .add('/about/', () => {
+        alert('welcome in about page');
+      })
+      .add('/products\/(.*)\/specification\/(.*)/',
+        (id:string, specification:string) => {
+          alert(`products: ${id} specification: ${specification}`);
+        })
+      .add('', () => {
+        // general controller
+        console.log('welcome in catch all controller');
+      });
+  };
+
+  async start():Promise<void> {
     const res = await fetch('./images.json');
     const categories: ImageCategoryModel[] = await res.json();
     const cat = categories[0];

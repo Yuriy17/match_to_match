@@ -17,25 +17,26 @@ export default class Game extends BaseComponent {
 
   constructor() {
     super('section', ['game', 'container']);
-    this.cardsField = new CardsField();
     this.timer = new Timer();
+    this.cardsField = new CardsField();
+    this.element.appendChild(this.timer.element);
     this.element.appendChild(this.cardsField.element);
   }
 
-  newGame(images: string[], bgImage: string) {
-    this.cardsField.clear();
+  newGame(images: string[], bgImage: string):void {
     this.timer.clear();
-    console.log(this.element);
-
-    this.element.appendChild(this.timer.addTimer());
+    this.timer.addTimer();
+    this.cardsField.clear();
     const sizedImages = images.slice(0, 5);
     const cards = sizedImages
       .concat(sizedImages)
-      .map((url, index) => new Card(
-        `images/${url}`,
-        `images/${bgImage}`,
-        `${index < 8 ? index : index - 8}`,
-      ))
+      .map(
+        (url, index) => new Card(
+          `images/${url}`,
+          `images/${bgImage}`,
+          `${index < 8 ? index : index - 8}`,
+        ),
+      )
       .sort(() => Math.random() - 0.5);
 
     cards.forEach((card) => {
@@ -45,7 +46,7 @@ export default class Game extends BaseComponent {
     this.cardsField.addCards(cards);
   }
 
-  clear = ():void => {
+  clear = (): void => {
     this.cardsField.clear();
     this.timer.clear();
     this.element.innerHTML = '';
@@ -70,10 +71,7 @@ export default class Game extends BaseComponent {
 
     if (this.activeCard.image !== card.image) {
       await delay(FLIP_DELAY);
-      await Promise.all([
-        this.activeCard.flipToBack(),
-        card.flipToBack(),
-      ]);
+      await Promise.all([this.activeCard.flipToBack(), card.flipToBack()]);
     }
 
     this.activeCard = undefined;

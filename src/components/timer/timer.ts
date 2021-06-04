@@ -8,7 +8,7 @@ export default class Timer extends BaseComponent {
   // createList = () {
 
   // }
-  addTimer = (): HTMLElement => {
+  addTimer = (): void => {
     const minites = document.createElement('span');
     const spliter = document.createElement('span');
     const seconds = document.createElement('span');
@@ -22,8 +22,6 @@ export default class Timer extends BaseComponent {
     seconds.innerText = '22';
 
     this.element.append(minites, spliter, seconds);
-
-    return this.element;
   };
 
   clear = () => {

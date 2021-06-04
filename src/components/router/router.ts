@@ -9,6 +9,8 @@ export default class Router {
 
   current:string = '';
 
+  timerId: number = 0;
+
   constructor() {
     this.listen();
   }
@@ -49,13 +51,13 @@ export default class Router {
   };
 
   navigate = (path = ''):Router => {
-    window.history.pushState(null, null, this.root + this.clearSlashes(path));
+    window.history.pushState(null, '', this.root + this.clearSlashes(path));
     return this;
   };
 
   listen = ():void => {
-    clearInterval(this.interval);
-    this.interval = setInterval(this.interval, 50);
+    window.clearInterval(this.timerId );
+    this.timerId  = window.setInterval(this.interval, 50);
   };
 
   interval = ():void => {

@@ -1,3 +1,6 @@
+@import 'assets/stylesheets/base/_fonts.scss';
+@import 'assets/stylesheets/abstract/_mixins.scss';
+
 * {
   padding: 0;
   margin: 0;
@@ -32,7 +35,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  &,.footer-text{
+  &,
+  .footer-text {
     color: #fff;
     a {
       color: #da982b;
@@ -50,6 +54,7 @@ footer {
   &__container {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     min-height: inherit;
     padding: 0 3vw;
@@ -59,7 +64,6 @@ footer {
 }
 
 .nav {
-
   display: flex;
 
   // .nav__link
@@ -87,15 +91,28 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
+    width: 30px;
+    min-width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: #fff;
+  }
+  &__icon + &__text {
+    margin: 0 0 0 8px;
   }
 }
 
 .auth-button {
+  display: block;
+  text-transform: capitalize;
+  text-decoration: none;
+  background: lawngreen;
+  color: black;
+  font-weight: 500;
+  padding: 5px 6px;
+  border-radius: 3px;
+  @include sunny(144%);
+  
 }
 
 .container {

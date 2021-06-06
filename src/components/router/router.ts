@@ -12,13 +12,31 @@ export default class Router {
   timerId = 0;
 
   constructor() {
+    const spaLinks = document.querySelectorAll('a.spa-link');
+    if (spaLinks) {
+      const spaLinksArr = [...spaLinks];
+      if (spaLinksArr.length) {
+        spaLinksArr.forEach((element: Element) => {
+          if (element instanceof HTMLElement) {
+            element.onclick = (e):boolean => {
+              const link = e.currentTarget as HTMLLinkElement;
+              const href = link?.getAttribute('href');
+              if (href !== null) {
+                this.navigate(href);
+              }
+              return false;
+            };
+          }
+        });
+      }
+    }
     // document.querySelectorAll('a').forEach((el) => {
-    //   el.onclick = ():boolean => {
+    //   el.addEventListener('click', ():boolean => {
     //     alert('sd');
     //     console.log('aaaaaa');
 
     //     return false;
-    //   };
+    //   });
     // });
     this.listen();
   }
@@ -62,6 +80,7 @@ export default class Router {
 
   navigate = (path: RegExp | string): Router => {
     window.history.pushState(null, '', this.root + this.clearSlashes(path));
+
     return this;
   };
 
@@ -71,13 +90,11 @@ export default class Router {
   };
 
   interval = (): void => {
-    // console.log(this.getFragment());
     if (this.current === this.getFragment()) return;
     this.current = this.getFragment();
 
     this.routes.some((route) => {
       const match = this.current.match(route.path);
-      console.log(match);
 
       if (match) {
         match.shift();

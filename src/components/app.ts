@@ -1,4 +1,7 @@
+import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
+import '../utils/popup';
+import { createElement } from '../utils/utils';
 import Game from './game/game';
 import Router from './router/router';
 
@@ -7,20 +10,57 @@ export default class App {
 
   private readonly router: Router;
 
+  private elements:Elements = {};
+
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game();
     this.initLayout();
     this.router = new Router();
     this.initRouter();
-    console.log(this.router);
   }
 
   initLayout = (): void => {
+    const header = createElement('header', ['header']);
+    const headerContainer = createElement('div', ['header__conrainer']);
+    const logo = createElement('a', ['spa-link', 'logo'], [['href', '/']]);
+    const logoIcon = createElement('i', ['fa', 'fa-fa-warehouse']);
+    const nav = createElement('nav', ['nav']);
+    const navIcon = createElement('span', ['nav__icon']);
+    const aboutLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/about']]);
+    const scoreLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/score']]);
+    const settingsLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/settings']]);
+    const scroreIcon = createElement('i', ['fa', 'fa-trophy']);
+    const settingsIcon = createElement('i', ['fa', 'fa-cog']);
+    const aboutIcon = createElement('i', ['fa', 'fa-question']);
+
     this.rootElement.appendChild(this.game.element);
-    // this.rootElement.insertAdjacentHTML(
-    //   'beforebegin',
-    //   '<header>Match to match</header>',
-    // );
+    this.rootElement.insertAdjacentHTML(
+      'beforebegin',
+      `<header>
+        <div class="header__container">
+          <a href="/" class="spa-link logo">
+            <i class="fa fa-warehouse"></i>
+          </a>
+          <nav class="nav">
+            <a href="/score" class="spa-link nav__link" title="leader score page">
+              <span class="nav__icon"><i class="fas fa-trophy"></i></span>
+              <span class="nav__text">Score</span>
+            </a>
+            <a href="/settings" class="spa-link nav__link" title="config page">
+              <span class="nav__icon"><i class="fas fa-cog"></i></span>
+              <span class="nav__text">Settings</span>
+            </a>
+            <a href="/about" class="spa-link nav__link" title="question page">
+              <span class="nav__icon"><i class="fas fa-question"></i></span>
+              <span class="nav__text">About</span>
+            </a>
+          </nav>
+          <a href="#" class="auth-button">
+            register new player
+          </a>
+        </div>
+      </header>`,
+    );
     // this.rootElement.insertAdjacentHTML(
     //   'afterend',
     //   `

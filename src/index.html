@@ -15,19 +15,19 @@
 
   <header class="header">
     <div class="header__container">
-      <a href="/" class="logo">
+      <a href="/" class="spa-link logo">
         <i class="fa fa-warehouse"></i>
       </a>
       <nav class="nav">
-        <a href="/about" class="nav__link" title="leader score page">
+        <a href="/score" class="spa-link nav__link" title="leader score page">
           <span class="nav__icon"><i class="fas fa-trophy"></i></span>
           <span class="nav__text">Score</span>
         </a>
-        <a href="/score" class="nav__link" title="config page">
+        <a href="/settings" class="spa-link nav__link" title="config page">
           <span class="nav__icon"><i class="fas fa-cog"></i></span>
           <span class="nav__text">Settings</span>
         </a>
-        <a href="/settings" class="nav__link" title="question page">
+        <a href="/about" class="spa-link nav__link" title="question page">
           <span class="nav__icon"><i class="fas fa-question"></i></span>
           <span class="nav__text">About</span>
         </a>
@@ -50,7 +50,24 @@
       thanks to <a href="https://github.com/rolling-scopes-school" target="_blank" ,>RS School</a>
     </p>
   </footer>
-
+  <div id="jsModalForm" class="modal">
+    <div class="modal__overlay jsOverlay"></div>
+    <div class="modal__container">
+      <div class="modal__content">
+        <form class="modal__form">
+          <span class="modal__title">ОТправить запрос</span>
+          <div class="modal__form-block">
+            <input type="text" class="modal__input modal__input_name" placeholder="Иван Васильевич" required>
+            <input type="tel" class="modal__input modal__input_surname" placeholder="Телефон" required>
+            <input type="email" class="modal__input modal__input_email" placeholder="E-mail" required>
+          </div>
+          <a href="#jsModalThanks" class="jsModalClose jsModalTrigger button modal__button">отправить</a>
+          <!-- <button class="button modal__button">отправить</button> -->
+        </form>
+      </div>
+      <button class="modal__close jsModalClose">&#10005;</button>
+    </div>
+  </div>
 </body>
 
 </html>

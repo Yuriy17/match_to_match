@@ -3,39 +3,115 @@
 // import Popper from '@popperjs/core';
 // import { createPopperLite as createPopper } from '@popperjs/core';
 import { Modal } from 'bootstrap';
-import { Elements } from '../../models/elements-model';
+import { BootstrapType } from '../../utils/constant';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
+import BootstrapComponent from '../bootstrap-component/bootstrap-component';
 import './registration.scss';
 
-const myModal = new Modal(document.getElementById('staticBackdrop'));
-myModal.toggle();
 export default class Registration extends BaseComponent {
-  private elements:Elements = {};
+  readonly jsModal;
 
   constructor() {
-    super('div', ['modal'], [['id', 'jsModalForm']]);
-    this.elements = this.createElements();
-    Array.from(document.querySelectorAll('.modal'))
-      .forEach((modalNode) => new Modal(modalNode));
+    super('div', ['modal', 'fade'],
+      [
+        ['id', 'staticBackdrop'],
+        ['data-bs-backdrop', 'static'],
+        ['data-bs-keyboard', 'false'],
+        ['tabindex', '-1'],
+        ['aria-labelledby', 'staticBackdropLabel'],
+        ['aria-hidden', 'true'],
+      ]);
+    this.element.append(this.createModal());
+    this.jsModal = new Modal(this.element);
   }
 
-  createElements = ():Elements => {
-    const overlay = createElement('div', ['modal__overlay', 'jsOverlay']);
-    const container = createElement('div', ['modal__container']);
-    const content = createElement('div', ['modal__content']);
-    const form = createElement('form', ['modal__form']);
-    const title = createElement('span', ['modal__title']);
-    const block = createElement('div', ['modal__form-block']);
-    const buttonSend = createElement('button', ['jsModalClose', 'button', 'modal__button']);
-    const buttonClose = createElement('button', ['modal__close', 'modal__close']);
+  // static initModal() {
+  //   Array.from(document.querySelectorAll('.modal'))
+  //     .forEach((modalNode) => new Modal(modalNode));
+  // }
 
-    buttonClose.innerText = '&#10005;';
-    form.append(title, block, buttonSend);
-    content.append(form);
-    container.append(content, buttonClose);
+  createModal = ():HTMLElement => {
+    const modalDialog = createElement('div', ['modal-dialog']);
+    const modalContent = createElement('div', ['modal-content']);
+    const modalHeader = createElement('div', ['modal-header']);
+    const modalTitle = createElement('div', ['modal-title']);
+    const modalBody = createElement('div', ['modal-body']);
+    const modalFooter = createElement('div', ['modal-footer']);
+    const buttonClose = createElement('button',
+      ['btn-close'],
+      [
+        ['type', 'button'],
+        ['data-bs-dismiss', 'modal'],
+        ['aria-label', 'Close'],
+      ]);
+    const buttonSubmit = createElement('button',
+      ['btn-primary', 'btn'],
+      [
+        ['type', 'button'],
+      ]);
+    const buttonCancel = createElement('button',
+      ['btn-secondary', 'btn'],
+      [
+        ['type', 'button'],
+        ['data-bs-dismiss', 'modal'],
+      ]);
+    const inputName = new BootstrapComponent({
+      type: BootstrapType.input,
+      typeInput: 'text',
+      classes: ['input-name'],
+      id: 'inputName',
+      placeholder: 'First Name',
+      floatLabel: 'First Name',
+    });
+    const inputSurname = new BootstrapComponent({
+      type: BootstrapType.input,
+      typeInput: 'text',
+      classes: ['input-surname'],
+      id: 'inputSurname',
+      placeholder: 'Last Name',
+      floatLabel: 'Last Name',
+    });
+    const inputEmail = new BootstrapComponent({
+      type: BootstrapType.input,
+      typeInput: 'email',
+      classes: ['input-email'],
+      id: 'inputEmail',
+      placeholder: 'E-mail',
+      floatLabel: 'E-mail',
+    });
+    modalTitle.innerText = 'Register new Player';
+    modalHeader.append(modalTitle, buttonClose);
+    modalBody.append(inputName.element, inputSurname.element, inputEmail.element);
+    modalFooter.append(buttonCancel, buttonSubmit);
+    modalContent.append(modalHeader, modalBody, modalFooter);
+    modalDialog.append(modalContent);
+    // const form = `
+    // <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+    //   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    //   <div class="modal-dialog">
+    //     <div class="modal-content">
+    //       <div class="modal-header">
+    //         <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+    //         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    //       </div>
+    //       <div class="modal-body">
+    //         ...
+    //       </div>
+    //       <div class="modal-footer">
+    //         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    //         <button type="button" class="btn btn-primary">Understood</button>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </div>`;
 
-    this.element.append(overlay, container);
+    // buttonClose.innerText = '&#10005;';
+    // form.append(title, block, buttonSend);
+    // content.append(form);
+    // container.append(content, buttonClose);
+
+    // this.element.append(overlay, container);
     // this.element.innerHTML = `
     // <div class="modal__overlay jsOverlay"></div>
     // <div class="modal__container">
@@ -55,15 +131,6 @@ export default class Registration extends BaseComponent {
     // </div>
     // `;
 
-    return {
-      overlay,
-      container,
-      content,
-      form,
-      title,
-      block,
-      buttonSend,
-      buttonClose,
-    };
+    return modalDialog;
   };
 }

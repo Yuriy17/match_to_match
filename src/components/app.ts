@@ -12,7 +12,7 @@ export default class App {
 
   private readonly router: Router;
 
-  private elements:Elements = {};
+  private elements: Elements = {};
 
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game();
@@ -24,63 +24,69 @@ export default class App {
 
   initLayout = (): void => {
     const header = createElement('header', ['header']);
-    const headerContainer = createElement('div', ['header__conrainer']);
+    const headerContainer = createElement('div', ['header__container']);
     const logo = createElement('a', ['spa-link', 'logo'], [['href', '/']]);
-    const logoIcon = createElement('i', ['fa', 'fa-fa-warehouse']);
+    const logoIcon = createElement('i', ['fa', 'fa-warehouse']);
     const nav = createElement('nav', ['nav']);
-    const navIcon = createElement('span', ['nav__icon']);
-    const aboutLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/about']]);
-    const scoreLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/score']]);
-    const settingsLink = createElement('a', ['spa-link', 'nav__link'], [['href', '/settings']]);
-    const scroreIcon = createElement('i', ['fa', 'fa-trophy']);
+    const navAboutIcon = createElement('span', ['nav__icon']);
+    const navSettingsIcon = createElement('span', ['nav__icon']);
+    const navScoreIcon = createElement('span', ['nav__icon']);
+    const navAboutText = createElement('span', ['nav__text']);
+    const navSettingsText = createElement('span', ['nav__text']);
+    const navScoreText = createElement('span', ['nav__text']);
+    const aboutLink = createElement(
+      'a',
+      ['spa-link', 'nav__link'],
+      [['href', '/about']],
+    );
+    const scoreLink = createElement(
+      'a',
+      ['spa-link', 'nav__link'],
+      [['href', '/score']],
+    );
+    const settingsLink = createElement(
+      'a',
+      ['spa-link', 'nav__link'],
+      [['href', '/settings']],
+    );
+    const scoreIcon = createElement('i', ['fa', 'fa-trophy']);
     const settingsIcon = createElement('i', ['fa', 'fa-cog']);
     const aboutIcon = createElement('i', ['fa', 'fa-question']);
+    const loginButton = createElement(
+      'button',
+      ['auth-button'],
+      [
+        ['data-bs-toggle', 'modal'],
+        ['data-bs-target', '#staticBackdrop'],
+      ],
+    );
+    const main = createElement('main', ['main']);
+    const footer = createElement('footer', ['footer']);
+    footer.innerHTML = `
+    <footer>
+      <p class="footer-text">
+        by <a href="https://github.com/Yuriy17" target="_blank">Yuriy</a>
+        thanks to <a href="https://github.com/rolling-scopes-school" target="_blank" ,>RS School</a>
+      </p>
+    </footer>`;
+    logo.append(logoIcon);
 
-    this.rootElement.appendChild(this.game.element);
-    // this.rootElement.insertAdjacentHTML(
-    //   'beforebegin',
-    //   `<header>
-    //     <div class="header__container">
-    //       <a href="/" class="spa-link logo">
-    //         <i class="fa fa-warehouse"></i>
-    //       </a>
-    //       <nav class="nav">
-    //         <a href="/score" class="spa-link nav__link" title="leader score page">
-    //           <span class="nav__icon"><i class="fas fa-trophy"></i></span>
-    //           <span class="nav__text">Score</span>
-    //         </a>
-    //         <a href="/settings" class="spa-link nav__link" title="config page">
-    //           <span class="nav__icon"><i class="fas fa-cog"></i></span>
-    //           <span class="nav__text">Settings</span>
-    //         </a>
-    //         <a href="/about" class="spa-link nav__link" title="question page">
-    //           <span class="nav__icon"><i class="fas fa-question"></i></span>
-    //           <span class="nav__text">About</span>
-    //         </a>
-    //       </nav>
-    //       <a href="#" class="auth-button">
-    //         register new player
-    //       </a>
-    //     </div>
-    //   </header>`,
-    // );
-    // this.rootElement.insertAdjacentHTML(
-    //   'afterend',
-    //   `
-    // <footer>
-    // <ul>
-    //   <li><a href="/">Home</a></li>
-    //   <li><a href="/about">About page</a></li>
-    //   <li><a href="/products/12/specification/10">Go to the product 12</a></li>
-    //   <li><a href="/products/22/specification/12">Go to the product 22</a></li>
-    // </ul>
-    //   <p class="footer-text">
-    //     by <a href="https://github.com/Yuriy17" target="_blank">Yuriy</a>
-    //     thanks to <a href="https://github.com/rolling-scopes-school" target="_blank",>RS School</a>
-    //   </p>
-    // </footer>
-    // `,
-    // );
+    navAboutIcon.append(aboutIcon);
+    navSettingsIcon.append(settingsIcon);
+    navScoreIcon.append(scoreIcon);
+    navAboutText.innerText = 'About';
+    navSettingsText.innerText = 'Settings';
+    navScoreText.innerText = 'Score';
+    aboutLink.append(navAboutIcon, navAboutText);
+    settingsLink.append(navSettingsIcon, navSettingsText);
+    scoreLink.append(navScoreIcon, navScoreText);
+
+    nav.append(aboutLink, settingsLink, scoreLink);
+    loginButton.innerText = 'register new player';
+    headerContainer.append(logo, nav, loginButton);
+    header.append(headerContainer);
+    main.append(this.game.element);
+    this.rootElement.append(header, main, footer, this.registration.element);
   };
 
   initRouter = (): void => {

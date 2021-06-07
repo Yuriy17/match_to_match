@@ -1,14 +1,23 @@
-import 'registration.scss';
+// import '@popperjs/core/dist/umd/popper.min';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// import Popper from '@popperjs/core';
+// import { createPopperLite as createPopper } from '@popperjs/core';
+import { Modal } from 'bootstrap';
 import { Elements } from '../../models/elements-model';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
+import './registration.scss';
 
+const myModal = new Modal(document.getElementById('staticBackdrop'));
+myModal.toggle();
 export default class Registration extends BaseComponent {
   private elements:Elements = {};
 
   constructor() {
     super('div', ['modal'], [['id', 'jsModalForm']]);
     this.elements = this.createElements();
+    Array.from(document.querySelectorAll('.modal'))
+      .forEach((modalNode) => new Modal(modalNode));
   }
 
   createElements = ():Elements => {

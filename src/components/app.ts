@@ -1,12 +1,14 @@
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
-import '../utils/popup';
 import { createElement } from '../utils/utils';
 import Game from './game/game';
+import Registration from './registration/registration';
 import Router from './router/router';
 
 export default class App {
   private readonly game: Game;
+
+  private readonly registration: Registration;
 
   private readonly router: Router;
 
@@ -14,6 +16,7 @@ export default class App {
 
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game();
+    this.registration = new Registration();
     this.initLayout();
     this.router = new Router();
     this.initRouter();
@@ -34,33 +37,33 @@ export default class App {
     const aboutIcon = createElement('i', ['fa', 'fa-question']);
 
     this.rootElement.appendChild(this.game.element);
-    this.rootElement.insertAdjacentHTML(
-      'beforebegin',
-      `<header>
-        <div class="header__container">
-          <a href="/" class="spa-link logo">
-            <i class="fa fa-warehouse"></i>
-          </a>
-          <nav class="nav">
-            <a href="/score" class="spa-link nav__link" title="leader score page">
-              <span class="nav__icon"><i class="fas fa-trophy"></i></span>
-              <span class="nav__text">Score</span>
-            </a>
-            <a href="/settings" class="spa-link nav__link" title="config page">
-              <span class="nav__icon"><i class="fas fa-cog"></i></span>
-              <span class="nav__text">Settings</span>
-            </a>
-            <a href="/about" class="spa-link nav__link" title="question page">
-              <span class="nav__icon"><i class="fas fa-question"></i></span>
-              <span class="nav__text">About</span>
-            </a>
-          </nav>
-          <a href="#" class="auth-button">
-            register new player
-          </a>
-        </div>
-      </header>`,
-    );
+    // this.rootElement.insertAdjacentHTML(
+    //   'beforebegin',
+    //   `<header>
+    //     <div class="header__container">
+    //       <a href="/" class="spa-link logo">
+    //         <i class="fa fa-warehouse"></i>
+    //       </a>
+    //       <nav class="nav">
+    //         <a href="/score" class="spa-link nav__link" title="leader score page">
+    //           <span class="nav__icon"><i class="fas fa-trophy"></i></span>
+    //           <span class="nav__text">Score</span>
+    //         </a>
+    //         <a href="/settings" class="spa-link nav__link" title="config page">
+    //           <span class="nav__icon"><i class="fas fa-cog"></i></span>
+    //           <span class="nav__text">Settings</span>
+    //         </a>
+    //         <a href="/about" class="spa-link nav__link" title="question page">
+    //           <span class="nav__icon"><i class="fas fa-question"></i></span>
+    //           <span class="nav__text">About</span>
+    //         </a>
+    //       </nav>
+    //       <a href="#" class="auth-button">
+    //         register new player
+    //       </a>
+    //     </div>
+    //   </header>`,
+    // );
     // this.rootElement.insertAdjacentHTML(
     //   'afterend',
     //   `

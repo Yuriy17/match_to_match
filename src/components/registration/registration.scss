@@ -1,3 +1,46 @@
-
-//@import '~bootstrap/scss/_modal.scss';
 @import '~bootstrap/scss/bootstrap';
+@import '../../assets/stylesheets/abstract/_variables.scss';
+@import '../../assets/stylesheets/abstract/_mixins.scss';
+
+.avatar {
+  // .avatar__box
+
+  &__box {
+    position: relative;
+    height: 0px;
+    margin: 15px 0;
+    padding-bottom: 75.25%;
+
+    @include media(lg) {
+      padding-bottom: 45.25%;
+    }
+  }
+
+  &__image,  &__hover {
+    position: absolute;
+    width: auto;
+    height: auto;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+
+  }
+
+  &__image {
+    img {
+      display: block;
+      object-fit: contain;
+    }
+  }
+  // .avatar__hover
+
+  &__hover {
+    display: block;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity .3s ease-out;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

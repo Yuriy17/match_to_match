@@ -26,3 +26,7 @@
     background-position: 100% 0%;
   }
 }
+
+@mixin media($grid-value) {
+  @media (min-width: map.get($grid-breakpoints, $grid-value)) { @content; }
+}

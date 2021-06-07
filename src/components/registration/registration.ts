@@ -1,8 +1,8 @@
+import { Modal } from 'bootstrap';
 // import '@popperjs/core/dist/umd/popper.min';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // import Popper from '@popperjs/core';
 // import { createPopperLite as createPopper } from '@popperjs/core';
-import { Modal } from 'bootstrap';
 import { BootstrapType } from '../../utils/constant';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
@@ -32,11 +32,13 @@ export default class Registration extends BaseComponent {
   // }
 
   createModal = ():HTMLElement => {
-    const modalDialog = createElement('div', ['modal-dialog']);
-    const modalContent = createElement('div', ['modal-content']);
+    const modalDialog = createElement('div', ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
+    const modalContent = createElement('form', ['modal-content']);
     const modalHeader = createElement('div', ['modal-header']);
     const modalTitle = createElement('div', ['modal-title']);
-    const modalBody = createElement('div', ['modal-body']);
+    const modalBody = createElement('div', ['modal-body', 'row']);
+    const col1 = createElement('div', ['col-12', 'col-md-6']);
+    const col2 = createElement('div', ['col-12', 'col-md-6']);
     const modalFooter = createElement('div', ['modal-footer']);
     const buttonClose = createElement('button',
       ['btn-close'],
@@ -48,7 +50,7 @@ export default class Registration extends BaseComponent {
     const buttonSubmit = createElement('button',
       ['btn-primary', 'btn'],
       [
-        ['type', 'button'],
+        ['type', 'submit'],
       ]);
     const buttonCancel = createElement('button',
       ['btn-secondary', 'btn'],
@@ -59,7 +61,7 @@ export default class Registration extends BaseComponent {
     const inputName = new BootstrapComponent({
       type: BootstrapType.input,
       typeInput: 'text',
-      classes: ['input-name'],
+      classes: ['input-name', 'mb-3'],
       id: 'inputName',
       placeholder: 'First Name',
       floatLabel: 'First Name',
@@ -67,7 +69,7 @@ export default class Registration extends BaseComponent {
     const inputSurname = new BootstrapComponent({
       type: BootstrapType.input,
       typeInput: 'text',
-      classes: ['input-surname'],
+      classes: ['input-surname', 'mb-3'],
       id: 'inputSurname',
       placeholder: 'Last Name',
       floatLabel: 'Last Name',
@@ -80,56 +82,31 @@ export default class Registration extends BaseComponent {
       placeholder: 'E-mail',
       floatLabel: 'E-mail',
     });
+    const avatar = createElement('div', ['avatar']);
+    const avatarBox = createElement('div', ['avatar__box']);
+    const avatarImageLabel = createElement('label', ['avatar__image'], [['for', 'avatarImage']]);
+    const avatarImage = createElement('img', [], [
+      ['src', 'images/avatar.png'],
+      ['alt', 'avatar placeholder'],
+    ]);
+    const avatarImageHover = createElement('img', ['avatar__hover'], [
+      ['src', 'images/avatar-hover.png'],
+      ['alt', 'avatar placeholder hover'],
+    ]);
+    avatarImageLabel.append(avatarImage);
+    avatarBox.append(avatarImageLabel, avatarImageHover);
+    avatar.append(avatarBox);
+
+    buttonCancel.innerText = 'cancel';
+    buttonSubmit.innerText = 'submit';
     modalTitle.innerText = 'Register new Player';
     modalHeader.append(modalTitle, buttonClose);
-    modalBody.append(inputName.element, inputSurname.element, inputEmail.element);
+    col1.append(inputName.element, inputSurname.element, inputEmail.element);
+    col2.append(avatar);
+    modalBody.append(col1, col2);
     modalFooter.append(buttonCancel, buttonSubmit);
     modalContent.append(modalHeader, modalBody, modalFooter);
     modalDialog.append(modalContent);
-    // const form = `
-    // <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-    //   data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    //   <div class="modal-dialog">
-    //     <div class="modal-content">
-    //       <div class="modal-header">
-    //         <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-    //         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-    //       </div>
-    //       <div class="modal-body">
-    //         ...
-    //       </div>
-    //       <div class="modal-footer">
-    //         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    //         <button type="button" class="btn btn-primary">Understood</button>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>`;
-
-    // buttonClose.innerText = '&#10005;';
-    // form.append(title, block, buttonSend);
-    // content.append(form);
-    // container.append(content, buttonClose);
-
-    // this.element.append(overlay, container);
-    // this.element.innerHTML = `
-    // <div class="modal__overlay jsOverlay"></div>
-    // <div class="modal__container">
-    //   <div class="modal__content">
-    //     <form class="modal__form">
-    //       <span class="modal__title">ОТправить запрос</span>
-    //       <div class="modal__form-block">
-    //         <input type="text" class="modal__input modal__input_name" placeholder="Иван Васильевич" required>
-    //         <input type="tel" class="modal__input modal__input_surname" placeholder="Телефон" required>
-    //         <input type="email" class="modal__input modal__input_email" placeholder="E-mail" required>
-    //       </div>
-    //       <a href="#jsModalThanks" class="jsModalClose jsModalTrigger button modal__button">отправить</a>
-    //       <!-- <button class="button modal__button">отправить</button> -->
-    //     </form>
-    //   </div>
-    //   <button class="modal__close jsModalClose">&#10005;</button>
-    // </div>
-    // `;
 
     return modalDialog;
   };

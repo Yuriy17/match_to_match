@@ -5,7 +5,7 @@ import '@fortawesome/fontawesome-free/js/solid';
 import App from './components/app';
 import './styles.scss';
 
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const appElement = document.getElementById('app');
   if (!appElement) throw Error('App root element not found');
 

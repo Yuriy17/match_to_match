@@ -1,6 +1,7 @@
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
 import { createElement } from '../utils/utils';
+import CreateDatabase from './create-database';
 import Game from './game/game';
 import Registration from './registration/registration';
 import Router from './router/router';
@@ -15,6 +16,8 @@ export default class App {
   private elements: Elements = {};
 
   constructor(private readonly rootElement: HTMLElement) {
+    const db = new CreateDatabase();
+    db.init();
     this.game = new Game();
     this.registration = new Registration();
     this.initLayout();

@@ -1,6 +1,6 @@
+@import '~bootstrap/scss/bootstrap';
 @import 'assets/stylesheets/base/_fonts.scss';
 @import 'assets/stylesheets/abstract/_variables.scss';
-@import 'assets/stylesheets/abstract/_placeholders.scss';
 @import 'assets/stylesheets/abstract/_mixins.scss';
 
 * {
@@ -50,6 +50,10 @@ footer {
 }
 footer {
   min-height: 40px;
+  p {
+    padding: 0;
+    margin: 0;
+  }
 }
 .header {
   min-height: 40px;
@@ -66,6 +70,8 @@ footer {
   }
 }
 .logo {
+  display: block;
+  margin: 0px 8% 0 0;
 }
 
 .nav {
@@ -86,8 +92,14 @@ footer {
       background: rgba(0, 0, 0, 0.31);
     }
   }
-  &__text {
-    color: #da982b;
+  &__link, &__text {
+    text-decoration: none;
+    &:hover, & {
+      color: #da982b;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   // .nav__icon
@@ -126,4 +138,9 @@ footer {
   max-width: 925px;
   padding: 25px;
   margin: 0 auto;
+}
+.main {
+  @include media(md) {
+    margin: 0 0 7%;
+  }
 }

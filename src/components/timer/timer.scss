@@ -1,0 +1,20 @@
+@import '../../assets/stylesheets/abstract/_variables.scss';
+@import '../../assets/stylesheets/abstract/_mixins.scss';
+.timer {
+  margin: 2% auto 5%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  background: #da982b;
+  width: 20%;
+  min-width: 120px;
+  border-radius: 1px;
+  border: 2px dashed white;
+  display: block;
+  cursor: pointer;
+  @include sunny(204%);
+  &_active {
+    background: firebrick;
+  }
+}

@@ -1,4 +1,5 @@
 import delay from '../../shared/delay';
+import { addClass, removeClass } from '../../utils/utils';
 import BaseComponent from '../base-component';
 import CardsField from '../card-field/card-field';
 import Card from '../card/card';
@@ -15,9 +16,13 @@ export default class Game extends BaseComponent {
 
   private isAnimation = false;
 
+  private isPause = true;
+
   constructor() {
     super('section', ['game', 'container']);
-    this.timer = new Timer();
+    this.timer = new Timer(
+      this.pauseHandler,
+    );
     this.cardsField = new CardsField();
     this.element.appendChild(this.timer.element);
     this.element.appendChild(this.cardsField.element);
@@ -25,7 +30,6 @@ export default class Game extends BaseComponent {
 
   newGame(images: string[], bgImage: string):void {
     this.timer.clear();
-    this.timer.addTimer();
     this.cardsField.clear();
     const sizedImages = images.slice(0, 5);
     const cards = sizedImages
@@ -46,6 +50,16 @@ export default class Game extends BaseComponent {
     this.cardsField.addCards(cards);
   }
 
+  pauseHandler = ():void => {
+    if (this.isPause) {
+      this.isPause = false;
+      this.timer.startTimer();
+    } else {
+      this.isPause = true;
+      this.timer.stopTimer();
+    }
+  };
+
   clear = (): void => {
     this.cardsField.clear();
     this.timer.clear();
@@ -56,8 +70,9 @@ export default class Game extends BaseComponent {
   // }
 
   private async cardHandler(card: Card) {
-    if (this.isAnimation) return;
-    if (!card.isFlipped) return;
+    if (this.isPause
+      || this.isAnimation
+      || !card.isFlipped) return;
 
     this.isAnimation = true;
 
@@ -70,8 +85,12 @@ export default class Game extends BaseComponent {
     }
 
     if (this.activeCard.image !== card.image) {
+      addClass([this.activeCard.element, card.element], 'wrong');
       await delay(FLIP_DELAY);
       await Promise.all([this.activeCard.flipToBack(), card.flipToBack()]);
+      removeClass([this.activeCard.element, card.element], 'wrong');
+    } else {
+      addClass([this.activeCard.element, card.element], 'right');
     }
 
     this.activeCard = undefined;

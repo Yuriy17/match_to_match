@@ -32,7 +32,8 @@ export default class Registration extends BaseComponent {
   // }
 
   createModal = ():HTMLElement => {
-    const modalDialog = createElement('div', ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
+    const modalDialog = createElement('div',
+      ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
     const modalContent = createElement('form', ['modal-content']);
     const modalHeader = createElement('div', ['modal-header']);
     const modalTitle = createElement('div', ['modal-title']);

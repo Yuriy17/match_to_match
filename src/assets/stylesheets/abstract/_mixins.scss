@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin sunny($width){
 
   position: relative;
@@ -8,7 +10,7 @@
     content: "";
     position: absolute;
     top: 0;
-    left: -2em;
+    left: -2rem;
     width: $width;
     height: 100%;
     background: linear-gradient(

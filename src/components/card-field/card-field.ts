@@ -23,4 +23,14 @@ export default class CardsField extends BaseComponent {
       this.cards.forEach((card) => card.flipToBack());
     }, 1000);
   }
+
+  isComplete = ():boolean => {
+    let isComplete = true;
+    this.cards.forEach((card) => {
+      if (!card.element.classList.contains('right')) {
+        isComplete = false;
+      }
+    });
+    return isComplete;
+  };
 }

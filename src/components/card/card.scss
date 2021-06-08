@@ -26,6 +26,12 @@
   &.flip {
     transform: rotateY(180deg);
   }
+  &.right .front-face {
+    border-color: green;
+  }
+  &.wrong .front-face {
+    border-color: red;
+  }
 }
 
 

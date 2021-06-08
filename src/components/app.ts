@@ -63,12 +63,10 @@ export default class App {
     const main = createElement('main', ['main']);
     const footer = createElement('footer', ['footer']);
     footer.innerHTML = `
-    <footer>
       <p class="footer-text">
         by <a href="https://github.com/Yuriy17" target="_blank">Yuriy</a>
         thanks to <a href="https://github.com/rolling-scopes-school" target="_blank" ,>RS School</a>
-      </p>
-    </footer>`;
+      </p>`;
     logo.append(logoIcon);
 
     navAboutIcon.append(aboutIcon);

@@ -1,29 +1,20 @@
-import { Modal } from 'bootstrap';
 // import '@popperjs/core/dist/umd/popper.min';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // import Popper from '@popperjs/core';
 // import { createPopperLite as createPopper } from '@popperjs/core';
 import { BootstrapType } from '../../utils/constant';
 import { createElement } from '../../utils/utils';
-import BaseComponent from '../base-component';
 import BootstrapComponent from '../bootstrap-component/bootstrap-component';
+import Modal from '../modal/modal';
 import './registration.scss';
 
-export default class Registration extends BaseComponent {
-  readonly jsModal;
+export default class Registration {
+  readonly modal;
+
+  readonly loginButton: HTMLElement;
 
   constructor() {
-    super('div', ['modal', 'fade'],
-      [
-        ['id', 'staticBackdrop'],
-        ['data-bs-backdrop', 'static'],
-        ['data-bs-keyboard', 'false'],
-        ['tabindex', '-1'],
-        ['aria-labelledby', 'staticBackdropLabel'],
-        ['aria-hidden', 'true'],
-      ]);
-    this.element.append(this.createModal());
-    this.jsModal = new Modal(this.element);
+    this.modal = new Modal(this.createModal());
   }
 
   // static initModal() {
@@ -32,22 +23,8 @@ export default class Registration extends BaseComponent {
   // }
 
   createModal = ():HTMLElement => {
-    const modalDialog = createElement('div',
-      ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
-    const modalContent = createElement('form', ['modal-content']);
-    const modalHeader = createElement('div', ['modal-header']);
-    const modalTitle = createElement('div', ['modal-title']);
-    const modalBody = createElement('div', ['modal-body', 'row']);
     const col1 = createElement('div', ['col-12', 'col-md-6']);
     const col2 = createElement('div', ['col-12', 'col-md-6']);
-    const modalFooter = createElement('div', ['modal-footer']);
-    const buttonClose = createElement('button',
-      ['btn-close'],
-      [
-        ['type', 'button'],
-        ['data-bs-dismiss', 'modal'],
-        ['aria-label', 'Close'],
-      ]);
     const buttonSubmit = createElement('button',
       ['btn-primary', 'btn'],
       [
@@ -100,15 +77,24 @@ export default class Registration extends BaseComponent {
 
     buttonCancel.innerText = 'cancel';
     buttonSubmit.innerText = 'submit';
-    modalTitle.innerText = 'Register new Player';
-    modalHeader.append(modalTitle, buttonClose);
+
     col1.append(inputName.element, inputSurname.element, inputEmail.element);
     col2.append(avatar);
-    modalBody.append(col1, col2);
-    modalFooter.append(buttonCancel, buttonSubmit);
-    modalContent.append(modalHeader, modalBody, modalFooter);
-    modalDialog.append(modalContent);
 
-    return modalDialog;
+    return {
+      id: 'registration',
+      body: {
+        elements: [col1, col2],
+      },
+      header: {
+        title: 'Register new Player',
+      },
+      footer: {
+        isCenter: false,
+        elements: [buttonCancel, buttonSubmit],
+      },
+      isLink: true,
+      isForm: true,
+    };
   };
 }

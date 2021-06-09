@@ -1,7 +1,6 @@
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
 import { createElement } from '../utils/utils';
-import CreateDatabase from './create-database';
 import Game from './game/game';
 import Registration from './registration/registration';
 import Router from './router/router';
@@ -16,8 +15,8 @@ export default class App {
   private elements: Elements = {};
 
   constructor(private readonly rootElement: HTMLElement) {
-    const db = new CreateDatabase();
-    db.init();
+    // const db = new CreateDatabase();
+    // db.init();
     this.game = new Game();
     this.registration = new Registration();
     this.initLayout();
@@ -55,14 +54,7 @@ export default class App {
     const scoreIcon = createElement('i', ['fa', 'fa-trophy']);
     const settingsIcon = createElement('i', ['fa', 'fa-cog']);
     const aboutIcon = createElement('i', ['fa', 'fa-question']);
-    const loginButton = createElement(
-      'button',
-      ['auth-button'],
-      [
-        ['data-bs-toggle', 'modal'],
-        ['data-bs-target', '#staticBackdrop'],
-      ],
-    );
+
     const main = createElement('main', ['main']);
     const footer = createElement('footer', ['footer']);
     footer.innerHTML = `
@@ -83,8 +75,8 @@ export default class App {
     scoreLink.append(navScoreIcon, navScoreText);
 
     nav.append(aboutLink, settingsLink, scoreLink);
-    loginButton.innerText = 'register new player';
-    headerContainer.append(logo, nav, loginButton);
+
+    headerContainer.append(logo, nav, this.registration.loginButton);
     header.append(headerContainer);
     main.append(this.game.element);
     this.rootElement.append(header, main, footer, this.registration.element);

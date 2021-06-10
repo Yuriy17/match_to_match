@@ -9,20 +9,35 @@ import Modal from '../modal/modal';
 import './registration.scss';
 
 export default class Registration {
-  readonly modal;
+  readonly modal:Modal;
 
-  readonly loginButton: HTMLElement;
+  readonly button: HTMLElement;
+
+  readonly element: HTMLElement;
+
+  readonly id: string = 'registration';
 
   constructor() {
     this.modal = new Modal(this.createModal());
+    this.element = this.modal.element;
+    this.button = this.createLink(this.id);
   }
 
-  // static initModal() {
-  //   Array.from(document.querySelectorAll('.modal'))
-  //     .forEach((modalNode) => new Modal(modalNode));
-  // }
-
-  createModal = ():HTMLElement => {
+  createModal = (): {
+    id: string,
+    body: {
+      elements: Array<HTMLElement>,
+    },
+    header?: {
+      title: string,
+    },
+    footer?: {
+      isCenter: boolean,
+      elements: Array<HTMLElement>,
+    },
+    isLink?: boolean,
+    isForm?: boolean
+  } => {
     const col1 = createElement('div', ['col-12', 'col-md-6']);
     const col2 = createElement('div', ['col-12', 'col-md-6']);
     const buttonSubmit = createElement('button',
@@ -82,7 +97,7 @@ export default class Registration {
     col2.append(avatar);
 
     return {
-      id: 'registration',
+      id: this.id,
       body: {
         elements: [col1, col2],
       },
@@ -93,8 +108,20 @@ export default class Registration {
         isCenter: false,
         elements: [buttonCancel, buttonSubmit],
       },
-      isLink: true,
       isForm: true,
     };
+  };
+
+  createLink = (id: string): HTMLElement => {
+    const link = createElement(
+      'button',
+      ['auth-button'],
+      [
+        ['data-bs-toggle', 'modal'],
+        ['data-bs-target', `#${id}`],
+      ],
+    );
+    link.innerText = 'register new player';
+    return link;
   };
 }

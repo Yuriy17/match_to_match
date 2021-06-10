@@ -76,7 +76,7 @@ export default class App {
 
     nav.append(aboutLink, settingsLink, scoreLink);
 
-    headerContainer.append(logo, nav, this.registration.loginButton);
+    headerContainer.append(logo, nav, this.registration.button);
     header.append(headerContainer);
     main.append(this.game.element);
     this.rootElement.append(header, main, footer, this.registration.element);

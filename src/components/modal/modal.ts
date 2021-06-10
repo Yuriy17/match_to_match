@@ -11,7 +11,7 @@ export default class Modal extends BaseComponent {
 
   // public body:HTMLElement;
 
-  readonly button: HTMLElement;
+  public readonly button: HTMLElement;
 
   constructor(properties: {
     id: string,
@@ -38,13 +38,11 @@ export default class Modal extends BaseComponent {
         ['aria-hidden', 'true'],
       ]);
 
-    this.jsModal = new BootstrapModal(this.element);
     this.element.append(this.createModal(
       properties.header, properties.body, properties.footer, properties.isForm,
     ));
-    if (properties.isLink) {
-      this.button = this.createLink(properties.id);
-    }
+    console.log(this.element);
+    this.jsModal = new BootstrapModal(this.element);
   }
 
   createModal = (header: { title: string }, body: { elements: Array<HTMLElement> },
@@ -87,22 +85,9 @@ export default class Modal extends BaseComponent {
   };
 
   addFooter = (elements: Array<HTMLElement>, isCenter?: boolean):HTMLElement => {
-    const footer = createElement('div',
-      ['modal-footer', isCenter ? 'justify-content-center' : '']);
+    const footer = isCenter ? createElement('div', ['modal-footer', 'justify-content-center'])
+      : createElement('div', ['modal-footer']);
     footer.append(...elements);
     return footer;
-  };
-
-  createLink = (id: string): HTMLElement => {
-    const link = createElement(
-      'button',
-      ['auth-button'],
-      [
-        ['data-bs-toggle', 'modal'],
-        ['data-bs-target', `#${id}`],
-      ],
-    );
-    link.innerText = 'register new player';
-    return link;
   };
 }

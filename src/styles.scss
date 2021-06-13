@@ -1,7 +1,8 @@
-@import '~bootstrap/scss/bootstrap';
-@import 'assets/stylesheets/base/_fonts.scss';
 @import 'assets/stylesheets/abstract/_variables.scss';
 @import 'assets/stylesheets/abstract/_mixins.scss';
+@import 'assets/stylesheets/base/_custom-bootstrap.scss';
+@import 'assets/stylesheets/base/_fonts.scss';
+@import '~bootstrap/scss/bootstrap';
 
 * {
   padding: 0;
@@ -123,7 +124,7 @@ footer {
   display: block;
   text-transform: capitalize;
   text-decoration: none;
-  background: lawngreen;
+  background: $active-color;
   color: black;
   font-weight: 500;
   padding: 5px 6px;
@@ -141,6 +142,6 @@ footer {
 }
 .main {
   @include media(md) {
-    margin: 0 0 7%;
+    margin: 1% 0 4%;
   }
 }

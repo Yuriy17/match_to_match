@@ -1,7 +1,6 @@
 /* eslint-disable no-control-regex */
-
 import { BootstrapType } from '../../utils/constant';
-import { createElement } from '../../utils/utils';
+import { createElement, createImageElement } from '../../utils/utils';
 import BootstrapComponent from '../bootstrap-component/bootstrap-component';
 import Modal from '../modal/modal';
 import './registration.scss';
@@ -21,6 +20,12 @@ export default class Registration {
   readonly element: HTMLElement;
 
   readonly id: string = 'registration';
+
+  avatarImage: HTMLImageElement;
+
+  avatarLabel:HTMLElement;
+
+  oFReader: FileReader;
 
   constructor() {
     this.modal = new Modal(this.createModal());
@@ -87,15 +92,12 @@ export default class Registration {
       floatLabel: 'E-mail',
     });
     const avatar = createElement('div', ['avatar']);
-    const avatarBox = createElement('div', ['avatar__box']);
-    const avatarImageLabel = createElement(
-      'label',
-      ['avatar__image'],
-      [['for', 'avatarImage']],
-    );
-    const avatarImage = createElement(
+    this.avatarLabel = createElement('label',
+      ['avatar__label'],
+      [['for', 'avatar_file']]);
+    this.avatarImage = createImageElement(
       'img',
-      [],
+      ['avatar__image'],
       [
         ['src', 'images/avatar.png'],
         ['alt', 'avatar placeholder'],
@@ -109,9 +111,28 @@ export default class Registration {
         ['alt', 'avatar placeholder hover'],
       ],
     );
-    avatarImageLabel.append(avatarImage);
-    avatarBox.append(avatarImageLabel, avatarImageHover);
-    avatar.append(avatarBox);
+    const avatarTrashIcon = createElement(
+      'img',
+      ['avatar__preview-trash'],
+      [
+        ['src', 'images/ic_trash_white.svg'],
+        ['alt', 'icon trash white'],
+      ],
+    );
+    const fileInput = createElement(
+      'input',
+      ['avatar__file'],
+      [
+        ['id', 'avatar_file'],
+        ['name', 'avatar file'],
+        ['type', 'file'],
+        ['hidden', ''],
+        ['accept', 'image/png, image/jpeg, image/jpg'],
+      ],
+    );
+    fileInput.addEventListener('change', this.previewListener);
+    this.avatarLabel.append(this.avatarImage, avatarImageHover);
+    avatar.append(this.avatarLabel, avatarTrashIcon, fileInput);
 
     buttonCancel.innerText = 'cancel';
     buttonSubmit.innerText = 'submit';
@@ -146,5 +167,21 @@ export default class Registration {
     );
     link.innerText = 'register new player';
     return link;
+  };
+
+  previewListener = (e: Event):void => {
+    const uploadInput = <HTMLInputElement>e.currentTarget;
+
+    if (this.avatarLabel && this.avatarImage) {
+      this.oFReader = new FileReader();
+      this.oFReader.readAsDataURL(uploadInput.files[0]);
+
+      this.oFReader.onload = (oFREvent) => {
+        this.avatarLabel.classList.add('loaded');
+        if (typeof oFREvent.target.result === 'string') {
+          this.avatarImage.src = oFREvent.target.result;
+        }
+      };
+    }
   };
 }

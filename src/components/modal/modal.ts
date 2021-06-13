@@ -1,6 +1,7 @@
 import { Modal as BootstrapModal } from 'bootstrap';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
+import './modal.scss';
 
 export default class Modal extends BaseComponent {
   readonly jsModal;
@@ -41,7 +42,6 @@ export default class Modal extends BaseComponent {
     this.element.append(this.createModal(
       properties.header, properties.body, properties.footer, properties.isForm,
     ));
-    console.log(this.element);
     this.jsModal = new BootstrapModal(this.element);
   }
 

@@ -5,53 +5,84 @@
   display: flex;
   align-items: center;
   height: 100%;
-  // .avatar__box
+  position: relative;
 
-  &__box {
-    position: relative;
-    height: 0px;
-    margin: 15px 0;
-    width: 100%;
-    padding-bottom: 30.25%;
-    @include media(sm) {
-      padding-bottom: 35.25%;
-    }
-    @include media(md) {
-      padding-bottom: 40.25%;
-    }
-    @include media(lg) {
-      padding-bottom: 45.25%;
-    }
-  }
+   &__hover {
 
-  &__image,  &__hover {
-    position: absolute;
-    width: auto;
-    height: 100%;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
 
   }
 
   &__image {
-    img {
-      display: block;
-      object-fit: contain;
-      height: 100%;
-      border-radius: 50%;
-      overflow: hidden;
-    }
+    display: block;
+    position: absolute;
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    // display: block;
+    // object-fit: contain;
+    // height: 100%;
+    // border-radius: 50%;
+    // overflow: hidden;
+    // margin: 0 auto;
   }
   // .avatar__hover
 
   &__hover {
+    // position: absolute;
+    // width: auto;
+    // height: 100%;
+    // top: 0px;
+    // left: 50%;
+    // transform: translateX(-50%);
+
     display: block;
     object-fit: contain;
     opacity: 0;
     transition: opacity .3s ease-out;
-    &:hover {
-      opacity: 1;
-    }
+
+    /* z-index: 33; */
+    position: relative;
   }
+
+    // .avatar__preview-trash
+
+    &__preview-trash {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      left: auto;
+      z-index: 1;
+    }
+  
+    // .avatar__file
+  
+    &__file {
+      position: absolute;
+      opacity: 0;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+    &__label {
+      position: relative;
+      display: block;
+      width: fit-content;
+      height: auto;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 50%;
+      z-index: 1;
+      border: 1px solid #ced4da;
+      max-height: 100%;
+      max-width: 100%;
+
+
+      &:hover .avatar__hover {
+        opacity: 1;
+      }
+    }
 }

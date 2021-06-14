@@ -48,6 +48,8 @@
       left: auto;
       z-index: 1;
       cursor: pointer;
+      visibility: hidden;
+      opacity: 0;
     }
   
     // .avatar__file
@@ -75,6 +77,10 @@
       &.loaded {
         .avatar__image {
           z-index: 1;
+        }
+        & + .avatar__preview-trash {
+          visibility: visible;
+          opacity: 1;
         }
       }
 

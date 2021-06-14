@@ -216,7 +216,7 @@ export default class Registration {
   createLink = (id: string): HTMLElement => {
     const link = createElement(
       'button',
-      ['auth-button'],
+      ['auth-button', 'btn'],
       [
         ['data-bs-toggle', 'modal'],
         ['data-bs-target', `#${id}`],

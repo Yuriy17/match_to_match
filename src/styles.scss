@@ -125,7 +125,6 @@ footer {
   text-transform: capitalize;
   text-decoration: none;
   background: #90C96E;
-  color: #fff;
   border: none;
   font-weight: 500;
   padding: 5px 6px;
@@ -133,10 +132,11 @@ footer {
   position: relative;
   cursor: pointer;
   overflow-x: hidden;
-  @include sunny(144%);
+  color: rgb(66, 66, 66);
   transition:  color 0.4s ease-in-out;
+  @include sunny(144%);
   &:hover {
-    color: rgb(66, 66, 66);
+    color: #fff;
   }
 }
 

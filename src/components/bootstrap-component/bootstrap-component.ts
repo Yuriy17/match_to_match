@@ -5,6 +5,8 @@ import './bootstrap-component.scss';
 export default class BootstrapComponent {
   readonly element: HTMLElement;
 
+  readonly targetElement: HTMLElement;
+
   constructor(properties: {
     type: string,
     classes: Array<string>,
@@ -36,7 +38,7 @@ export default class BootstrapComponent {
     const { input, select, list } = BootstrapType;
 
     if (type === input) {
-      const inputElement = isRequired ? createElement('input', ['form-control', ...classes],
+      this.targetElement = isRequired ? createElement('input', ['form-control', ...classes],
         [['id', id], ['placeholder', placeholder], ['type', typeInput], ['required', '']])
         : createElement('input', ['form-control', ...classes],
           [['id', id], ['placeholder', placeholder], ['type', typeInput]]);
@@ -45,9 +47,9 @@ export default class BootstrapComponent {
 
       label.innerText = floatLabel;
       this.element = createElement('div', ['form-floating']);
-      this.element.append(inputElement, label);
+      this.element.append(this.targetElement, label);
       if (invalid) {
-        errorText = createElement('div', ['invalid-feedback']);
+        errorText = createElement('div', ['invalid-feedback', 'mb-2']);
         errorText.innerText = invalid;
         this.element.append(errorText);
       }

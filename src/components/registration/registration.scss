@@ -1,6 +1,25 @@
+//$fa-font-path: "~@fortawesome/fontawesome-free/webfonts"!default;
 
 @import './../../assets/stylesheets/abstract/_variables.scss';
 @import './../../assets/stylesheets/abstract/_mixins.scss';
+//$fa-font-path:        "../../assets/fonts/webfonts/";
+// @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+// @import "~@fortawesome/fontawesome-free/scss/solid.scss";
+// @import "~@fortawesome/fontawesome-free/scss/brands.scss";
+// @import "~@fortawesome/fontawesome-free/scss/core.scss";
+// @import "~@fortawesome/fontawesome-free/scss/mixins.scss";
+// @import "~@fortawesome/fontawesome-free/scss/icons.scss";
+// @import "~@fortawesome/fontawesome-free/scss/variables.scss";
+// @import "~@fortawesome/fontawesome-free/scss/animated.scss";
+// @import "~@fortawesome/fontawesome-free/scss/bordered-pulled.scss";
+// @import "~@fortawesome/fontawesome-free/scss/fixed-width.scss";
+// @import "~@fortawesome/fontawesome-free/scss/larger.scss";
+// @import "~@fortawesome/fontawesome-free/scss/list.scss";
+// @import "~@fortawesome/fontawesome-free/scss/rotated-flipped.scss";
+// @import "~@fortawesome/fontawesome-free/scss/stacked.scss";
+// @import "~@fortawesome/fontawesome-free/scss/screen-reader.scss";
+
+
 .avatar {
   display: flex;
   align-items: center;
@@ -15,12 +34,13 @@
   &__image, &__image_default {
     display: block;
     position: absolute;
-    width: auto;
+    width: 100%;
+    min-width: 100%;
     height: auto;
-    max-height: 100%;
-    top: 0px;
+    min-height: 100%;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%,-50%);
   }
   &__image_default {
 
@@ -63,6 +83,9 @@
       top: 0;
     }
     &__label {
+      // @extend %fa-icon;
+      // @extend .fas;
+    
       position: relative;
       display: block;
       width: fit-content;
@@ -86,6 +109,29 @@
 
       &:hover .avatar__hover {
         opacity: 1;
+      }
+      // &:before {
+      //   @extend %fa-icon;
+      //   @extend .fas;
+      //   @extend .fab;
+      //   display: inline-block;
+      //   font-style: normal;
+      //   font-variant: normal;
+      //   text-rendering: auto;
+      //   -webkit-font-smoothing: antialiased;
+      //   content:  fa-content($fa-var-truck-loading);
+      //   color: #000;
+      // }
+      &.loading {
+        // &:before {
+        //   display: inline-block;
+        //   font-style: normal;
+        //   font-variant: normal;
+        //   text-rendering: auto;
+        //   -webkit-font-smoothing: antialiased;
+        //    content:  fa-content($fa-var-truck-loading);
+        //   color: #000;
+        // }
       }
     }
 }

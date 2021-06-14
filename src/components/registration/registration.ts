@@ -5,6 +5,38 @@ import BootstrapComponent from '../bootstrap-component/bootstrap-component';
 import Modal from '../modal/modal';
 import './registration.scss';
 
+/**
+ * Resize a base 64 Image
+ * @param {String} base64 - The base64 string (must include MIME type)
+ * @param {Number} newWidth - The width of the image in pixels
+ * @param {Number} newHeight - The height of the image in pixels
+ */
+const resizeBase64Img = (
+  base64:string,
+  newMinSize:number,
+) => new Promise((resolve) => {
+  const img = document.createElement('img');
+  img.src = base64;
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    let scale;
+    if (img.width >= img.height) {
+      scale = newMinSize / img.height;
+    } else {
+      scale = newMinSize / img.width;
+    }
+    canvas.width = img.width * scale;
+    canvas.height = img.height * scale;
+    canvas.style.width = `${(img.width * scale).toString()}px`;
+    canvas.style.height = `${(img.height * scale).toString()}px`;
+    const context = canvas.getContext('2d');
+    context.scale(scale, scale);
+
+    context.drawImage(img, 0, 0);
+
+    resolve(canvas.toDataURL());
+  };
+});
 const patterns = {
   username: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/i,
   surname: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/i,
@@ -36,6 +68,12 @@ export default class Registration {
 
   readonly modalForm: HTMLElement;
 
+  email : HTMLInputElement;
+
+  surname : HTMLInputElement;
+
+  name : HTMLInputElement;
+
   readonly button: HTMLElement;
 
   readonly element: HTMLElement;
@@ -62,6 +100,10 @@ export default class Registration {
         event.preventDefault();
         event.stopPropagation();
       }
+      console.log(this.email);
+      console.log(this.surname);
+      console.log(this.name);
+      console.log(this.oFReader?.result);
 
       this.modalForm.classList.add('was-validated');
       // return false;
@@ -105,22 +147,22 @@ export default class Registration {
     const inputName = new BootstrapComponent({
       type: BootstrapType.input,
       typeInput: 'text',
-      classes: ['input-name', 'mb-3'],
+      classes: ['input-name', 'mb-2'],
       id: 'inputName',
       placeholder: 'First Name',
       floatLabel: 'First Name',
       isRequired: true,
-      invalid: `enter First Name(- Имя не может быть пустым.
-        - Имя не может состоять из цифр.
-        - Имя не может содержать служебные символы (~ ! @ # $ % * () _ — + = | : ; " ' \` < > , . ? / ^).)`,
+      invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
     });
     const inputSurname = new BootstrapComponent({
       type: BootstrapType.input,
       typeInput: 'text',
-      classes: ['input-surname', 'mb-3'],
+      classes: ['input-surname', 'mb-2'],
       id: 'inputSurname',
       placeholder: 'Last Name',
       floatLabel: 'Last Name',
+      isRequired: true,
+      invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
     });
     const inputEmail = new BootstrapComponent({
       type: BootstrapType.input,
@@ -129,7 +171,12 @@ export default class Registration {
       id: 'inputEmail',
       placeholder: 'E-mail',
       floatLabel: 'E-mail',
+      isRequired: true,
+      invalid: 'enter email in format test@test.com',
     });
+    this.email = <HTMLInputElement>inputEmail.targetElement;
+    this.surname = <HTMLInputElement>inputSurname.targetElement;
+    this.name = <HTMLInputElement>inputName.targetElement;
     const avatar = createElement('div', ['avatar']);
     this.avatarLabel = createElement('label',
       ['avatar__label'],
@@ -181,8 +228,6 @@ export default class Registration {
       fileInput.addEventListener('change', this.previewListener);
       if (avatarTrashIcon) {
         avatarTrashIcon.addEventListener('click', () => {
-          console.log(1);
-
           clearInputFile(fileInput);
           this.avatarLabel.classList.remove('loaded');
         });
@@ -229,14 +274,23 @@ export default class Registration {
   previewListener = (e: Event):void => {
     const uploadInput = <HTMLInputElement>e.currentTarget;
 
-    if (this.avatarLabel && this.avatarImage) {
+    if (this.avatarLabel && this.avatarImage && uploadInput.value !== '') {
       this.oFReader = new FileReader();
       this.oFReader.readAsDataURL(uploadInput.files[0]);
 
       this.oFReader.onload = (oFREvent) => {
-        this.avatarLabel.classList.add('loaded');
         if (typeof oFREvent.target.result === 'string') {
-          this.avatarImage.src = oFREvent.target.result;
+          if (uploadInput.files[0].size > 307200) {
+            this.avatarLabel.classList.add('loading');
+            resizeBase64Img(oFREvent.target.result, 307).then((value: any): void | PromiseLike<void> => {
+              this.avatarImage.src = value.toString();
+              this.avatarLabel.classList.add('loaded');
+              this.avatarLabel.classList.remove('loading');
+            });
+          } else {
+            this.avatarLabel.classList.add('loaded');
+            this.avatarImage.src = oFREvent.target.result;
+          }
         }
       };
     }

@@ -6,6 +6,8 @@ import './modal.scss';
 export default class Modal extends BaseComponent {
   readonly jsModal;
 
+  modalContent: HTMLElement;
+
   // public footer:HTMLElement;
 
   // public header:HTMLElement;
@@ -49,15 +51,15 @@ export default class Modal extends BaseComponent {
     footer: { isCenter: boolean, elements: Array<HTMLElement> }, isForm:boolean):HTMLElement => {
     const modalDialog = createElement('div',
       ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
-    const modalContent = isForm ? createElement('form', ['modal-content'], [['novalidate', '']])
+    this.modalContent = isForm ? createElement('form', ['modal-content', 'needs-validation'], [['novalidate', '']])
       : createElement('div', ['modal-content']);
 
-    modalContent.append(
+    this.modalContent.append(
       this.addHeader(header.title),
       this.addBody(body.elements),
       this.addFooter(footer.elements, footer.isCenter),
     );
-    modalDialog.append(modalContent);
+    modalDialog.append(this.modalContent);
 
     return modalDialog;
   };

@@ -29,3 +29,14 @@ export const removeClass = (
 export const toggleClass = (
   elements: Array<HTMLElement>, style: string,
 ):void => elements.forEach((element) => element.classList.toggle(style));
+
+// export const preventForm = (form: HTMLFormElement):void => {
+//   form.addEventListener('submit', (event) => {
+//     if (!form.checkValidity()) {
+//       event.preventDefault();
+//       event.stopPropagation();
+//     }
+
+//     form.classList.add('was-validated');
+//   }, false);
+// };

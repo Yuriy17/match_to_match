@@ -11,9 +11,30 @@ const patterns = {
   // eslint-disable-next-line max-len
   email: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
 };
+const clearInputFile = (f: any) => {
+  if (f.value) {
+    try {
+      // eslint-disable-next-line no-param-reassign
+      f.value = ''; // for IE11, latest Chrome/Firefox/Opera...
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+    if (f.value) { // for IE5 ~ IE10
+      const form = document.createElement('form');
+      const { parentNode } = f; const
+        ref = f.nextSibling;
+      form.appendChild(f);
+      form.reset();
+      parentNode.insertBefore(f, ref);
+    }
+  }
+};
 
 export default class Registration {
   readonly modal: Modal;
+
+  readonly modalForm: HTMLElement;
 
   readonly button: HTMLElement;
 
@@ -29,9 +50,23 @@ export default class Registration {
 
   constructor() {
     this.modal = new Modal(this.createModal());
+    this.modalForm = this.modal.modalContent;
+    this.formValidation();
     this.element = this.modal.element;
     this.button = this.createLink(this.id);
   }
+
+  formValidation = () => {
+    this.modalForm.addEventListener('submit', (event:Event) => {
+      if (!(<HTMLFormElement> this.modalForm).checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      this.modalForm.classList.add('was-validated');
+      // return false;
+    }, false);
+  };
 
   validate = (input: HTMLElement, regex: RegExp, errorMessage: string) => {
 
@@ -74,6 +109,10 @@ export default class Registration {
       id: 'inputName',
       placeholder: 'First Name',
       floatLabel: 'First Name',
+      isRequired: true,
+      invalid: `enter First Name(- Имя не может быть пустым.
+        - Имя не может состоять из цифр.
+        - Имя не может содержать служебные символы (~ ! @ # $ % * () _ — + = | : ; " ' \` < > , . ? / ^).)`,
     });
     const inputSurname = new BootstrapComponent({
       type: BootstrapType.input,
@@ -99,8 +138,16 @@ export default class Registration {
       'img',
       ['avatar__image'],
       [
-        ['src', 'images/avatar.png'],
+        ['src', 'data:,'],
         ['alt', 'avatar placeholder'],
+      ],
+    );
+    const avatarDefaultImage = createImageElement(
+      'img',
+      ['avatar__image_default'],
+      [
+        ['src', 'images/avatar.png'],
+        ['alt', 'avatar placeholder default'],
       ],
     );
     const avatarImageHover = createElement(
@@ -115,8 +162,8 @@ export default class Registration {
       'img',
       ['avatar__preview-trash'],
       [
-        ['src', 'images/ic_trash_white.svg'],
-        ['alt', 'icon trash white'],
+        ['src', 'images/ic_trash.svg'],
+        ['alt', 'icon trash'],
       ],
     );
     const fileInput = createElement(
@@ -130,8 +177,18 @@ export default class Registration {
         ['accept', 'image/png, image/jpeg, image/jpg'],
       ],
     );
-    fileInput.addEventListener('change', this.previewListener);
-    this.avatarLabel.append(this.avatarImage, avatarImageHover);
+    if (fileInput) {
+      fileInput.addEventListener('change', this.previewListener);
+      if (avatarTrashIcon) {
+        avatarTrashIcon.addEventListener('click', () => {
+          console.log(1);
+
+          clearInputFile(fileInput);
+          this.avatarLabel.classList.remove('loaded');
+        });
+      }
+    }
+    this.avatarLabel.append(this.avatarImage, avatarDefaultImage, avatarImageHover);
     avatar.append(this.avatarLabel, avatarTrashIcon, fileInput);
 
     buttonCancel.innerText = 'cancel';

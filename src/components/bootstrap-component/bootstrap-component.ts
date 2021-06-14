@@ -15,7 +15,9 @@ export default class BootstrapComponent {
     selectAriaLabel?: string,
     selectOptions?: Array<string>,
     selectDefaultOption?: string,
-    listItems?: Array<string>
+    listItems?: Array<string>,
+    invalid?: string,
+    isRequired?: boolean
   }) {
     const {
       type,
@@ -28,17 +30,27 @@ export default class BootstrapComponent {
       selectDefaultOption,
       floatLabel,
       listItems,
+      invalid,
+      isRequired,
     } = properties;
     const { input, select, list } = BootstrapType;
 
     if (type === input) {
-      const inputElement = createElement('input', ['form-control', ...classes],
-        [['id', id], ['placeholder', placeholder], ['type', typeInput]]);
+      const inputElement = isRequired ? createElement('input', ['form-control', ...classes],
+        [['id', id], ['placeholder', placeholder], ['type', typeInput], ['required', '']])
+        : createElement('input', ['form-control', ...classes],
+          [['id', id], ['placeholder', placeholder], ['type', typeInput]]);
       const label = createElement('label', [], [['for', id]]);
+      let errorText:HTMLElement;
 
       label.innerText = floatLabel;
       this.element = createElement('div', ['form-floating']);
       this.element.append(inputElement, label);
+      if (invalid) {
+        errorText = createElement('div', ['invalid-feedback']);
+        errorText.innerText = invalid;
+        this.element.append(errorText);
+      }
     } else if (type === select) {
       const selectElement = createElement('select', ['form-select'], [['id', id], ['aria-label', selectAriaLabel]]);
       const label = createElement('label', [], [['for', id]]);

@@ -233,7 +233,8 @@ export default class Registration {
         });
       }
     }
-    this.avatarLabel.append(this.avatarImage, avatarDefaultImage, avatarImageHover);
+    const loadingIcon = createElement('i', ['fas', 'fa-spinner', 'fa-spin', 'fa-5x']);
+    this.avatarLabel.append(this.avatarImage, avatarDefaultImage, avatarImageHover, loadingIcon);
     avatar.append(this.avatarLabel, avatarTrashIcon, fileInput);
 
     buttonCancel.innerText = 'cancel';

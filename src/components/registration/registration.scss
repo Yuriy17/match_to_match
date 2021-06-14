@@ -1,23 +1,6 @@
-//$fa-font-path: "~@fortawesome/fontawesome-free/webfonts"!default;
-
 @import './../../assets/stylesheets/abstract/_variables.scss';
 @import './../../assets/stylesheets/abstract/_mixins.scss';
-//$fa-font-path:        "../../assets/fonts/webfonts/";
-// @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
-// @import "~@fortawesome/fontawesome-free/scss/solid.scss";
-// @import "~@fortawesome/fontawesome-free/scss/brands.scss";
-// @import "~@fortawesome/fontawesome-free/scss/core.scss";
-// @import "~@fortawesome/fontawesome-free/scss/mixins.scss";
-// @import "~@fortawesome/fontawesome-free/scss/icons.scss";
-// @import "~@fortawesome/fontawesome-free/scss/variables.scss";
-// @import "~@fortawesome/fontawesome-free/scss/animated.scss";
-// @import "~@fortawesome/fontawesome-free/scss/bordered-pulled.scss";
-// @import "~@fortawesome/fontawesome-free/scss/fixed-width.scss";
-// @import "~@fortawesome/fontawesome-free/scss/larger.scss";
-// @import "~@fortawesome/fontawesome-free/scss/list.scss";
-// @import "~@fortawesome/fontawesome-free/scss/rotated-flipped.scss";
-// @import "~@fortawesome/fontawesome-free/scss/stacked.scss";
-// @import "~@fortawesome/fontawesome-free/scss/screen-reader.scss";
+
 
 
 .avatar {
@@ -110,18 +93,12 @@
       &:hover .avatar__hover {
         opacity: 1;
       }
-      // &:before {
-      //   @extend %fa-icon;
-      //   @extend .fas;
-      //   @extend .fab;
-      //   display: inline-block;
-      //   font-style: normal;
-      //   font-variant: normal;
-      //   text-rendering: auto;
-      //   -webkit-font-smoothing: antialiased;
-      //   content:  fa-content($fa-var-truck-loading);
-      //   color: #000;
-      // }
+      .fa-spin {
+        position: absolute;
+        z-index: 9999;
+        top: 26%;
+        left: 26%;
+      }
       &.loading {
         // &:before {
         //   display: inline-block;

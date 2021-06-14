@@ -1,3 +1,7 @@
+import { dom, library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faCog, faQuestion, faSpinner, faTrophy, faWarehouse
+} from '@fortawesome/free-solid-svg-icons';
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
 import { createElement } from '../utils/utils';
@@ -5,6 +9,12 @@ import Game from './game/game';
 import Registration from './registration/registration';
 import Router from './router/router';
 
+// We are only using the user-astronaut icon
+library.add(faTrophy, faCog, faQuestion, faWarehouse, faSpinner);
+
+// Replace any existing <i> tags with <svg> and set up a MutationObserver to
+// continue doing this as the DOM changes.
+dom.watch();
 export default class App {
   private readonly game: Game;
 

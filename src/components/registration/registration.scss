@@ -99,7 +99,13 @@
         top: 26%;
         left: 26%;
       }
+      .fa-spinner {
+        display: none;
+      }
       &.loading {
+        .fa-spinner {
+          display: block;
+        }
         // &:before {
         //   display: inline-block;
         //   font-style: normal;

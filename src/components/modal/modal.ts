@@ -1,4 +1,5 @@
 import { Modal as BootstrapModal } from 'bootstrap';
+import { ModalConfig } from '../../models/elements-model';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
 import './modal.scss';
@@ -16,22 +17,7 @@ export default class Modal extends BaseComponent {
 
   public readonly button: HTMLElement;
 
-  constructor(properties: {
-    id: string,
-    body: {
-      elements: Array<HTMLElement>,
-    },
-    header?: {
-      title: string,
-    },
-    footer?: {
-      isCenter: boolean,
-      elements: Array<HTMLElement>,
-    },
-    isLink?: boolean,
-    isForm?: boolean
-
-  }) {
+  constructor(properties: ModalConfig) {
     super('div', ['modal', 'fade'],
       [
         ['id', properties.id],
@@ -48,7 +34,7 @@ export default class Modal extends BaseComponent {
   }
 
   createModal = (header: { title: string }, body: { elements: Array<HTMLElement> },
-    footer: { isCenter: boolean, elements: Array<HTMLElement> }, isForm:boolean):HTMLElement => {
+    footer: { isSpaceBetween: boolean, elements: Array<HTMLElement> }, isForm:boolean):HTMLElement => {
     const modalDialog = createElement('div',
       ['modal-dialog', 'modal-lg', 'modal-dialog-centered', 'modal-dialog-scrollable']);
     this.modalContent = isForm ? createElement('form', ['modal-content', 'needs-validation'], [['novalidate', '']])
@@ -57,7 +43,7 @@ export default class Modal extends BaseComponent {
     this.modalContent.append(
       this.addHeader(header.title),
       this.addBody(body.elements),
-      this.addFooter(footer.elements, footer.isCenter),
+      this.addFooter(footer.elements, footer.isSpaceBetween),
     );
     modalDialog.append(this.modalContent);
 
@@ -86,8 +72,8 @@ export default class Modal extends BaseComponent {
     return body;
   };
 
-  addFooter = (elements: Array<HTMLElement>, isCenter?: boolean):HTMLElement => {
-    const footer = isCenter ? createElement('div', ['modal-footer', 'justify-content-center'])
+  addFooter = (elements: Array<HTMLElement>, isSpaceBetween?: boolean):HTMLElement => {
+    const footer = isSpaceBetween ? createElement('div', ['modal-footer', 'justify-space-between'])
       : createElement('div', ['modal-footer']);
     footer.append(...elements);
     return footer;

@@ -1,3 +1,4 @@
+import { ModalConfig } from '../../models/elements-model';
 /* eslint-disable no-control-regex */
 import { BootstrapType } from '../../utils/constant';
 import { createElement, createImageElement } from '../../utils/utils';
@@ -38,8 +39,8 @@ const resizeBase64Img = (
   };
 });
 const patterns = {
-  username: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/i,
-  surname: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/i,
+  username: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/,
+  surname: /^[a-zA-Z0-9][^0-9]([._-](?![._-])|[a-zA-Z0-9]){3,25}[a-zA-Z0-9][^~!@#$%*()_—+=|:;"'`<>,.?/^\0-\cZ]+$/,
   // eslint-disable-next-line max-len
   email: /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/,
 };
@@ -68,11 +69,13 @@ export default class Registration {
 
   readonly modalForm: HTMLElement;
 
-  email : HTMLInputElement;
+  private _email: HTMLInputElement;
 
-  surname : HTMLInputElement;
+  private _surname: HTMLInputElement;
 
-  name : HTMLInputElement;
+  private _name: HTMLInputElement;
+
+  private _photo: string;
 
   readonly button: HTMLElement;
 
@@ -89,46 +92,16 @@ export default class Registration {
   constructor() {
     this.modal = new Modal(this.createModal());
     this.modalForm = this.modal.modalContent;
-    this.formValidation();
+    // this.formValidation();
     this.element = this.modal.element;
     this.button = this.createLink(this.id);
   }
 
-  formValidation = () => {
-    this.modalForm.addEventListener('submit', (event:Event) => {
-      if (!(<HTMLFormElement> this.modalForm).checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-      console.log(this.email);
-      console.log(this.surname);
-      console.log(this.name);
-      console.log(this.oFReader?.result);
-
-      this.modalForm.classList.add('was-validated');
-      // return false;
-    }, false);
-  };
-
-  validate = (input: HTMLElement, regex: RegExp, errorMessage: string) => {
+  validate = (input: HTMLElement, regex: RegExp, errorMessage: string):void => {
 
   };
 
-  createModal = (): {
-    id: string;
-    body: {
-      elements: Array<HTMLElement>;
-    };
-    header?: {
-      title: string;
-    };
-    footer?: {
-      isCenter: boolean;
-      elements: Array<HTMLElement>;
-    };
-    isLink?: boolean;
-    isForm?: boolean;
-  } => {
+  createModal = (): ModalConfig => {
     const col1 = createElement('div', ['col-12', 'col-md-6']);
     const col2 = createElement('div', ['col-12', 'col-md-6']);
     const buttonSubmit = createElement(
@@ -153,6 +126,7 @@ export default class Registration {
       floatLabel: 'First Name',
       isRequired: true,
       invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
+      pattern: patterns.username.toString(),
     });
     const inputSurname = new BootstrapComponent({
       type: BootstrapType.input,
@@ -163,6 +137,7 @@ export default class Registration {
       floatLabel: 'Last Name',
       isRequired: true,
       invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
+      pattern: patterns.surname.toString(),
     });
     const inputEmail = new BootstrapComponent({
       type: BootstrapType.input,
@@ -173,10 +148,11 @@ export default class Registration {
       floatLabel: 'E-mail',
       isRequired: true,
       invalid: 'enter email in format test@test.com',
+      pattern: patterns.email.toString(),
     });
-    this.email = <HTMLInputElement>inputEmail.targetElement;
-    this.surname = <HTMLInputElement>inputSurname.targetElement;
-    this.name = <HTMLInputElement>inputName.targetElement;
+    this._email = <HTMLInputElement>inputEmail.targetElement;
+    this._surname = <HTMLInputElement>inputSurname.targetElement;
+    this._name = <HTMLInputElement>inputName.targetElement;
     const avatar = createElement('div', ['avatar']);
     this.avatarLabel = createElement('label',
       ['avatar__label'],
@@ -252,7 +228,7 @@ export default class Registration {
         title: 'Register new Player',
       },
       footer: {
-        isCenter: false,
+        isSpaceBetween: false,
         elements: [buttonCancel, buttonSubmit],
       },
       isForm: true,
@@ -284,16 +260,50 @@ export default class Registration {
           if (uploadInput.files[0].size > 307200) {
             this.avatarLabel.classList.add('loading');
             resizeBase64Img(oFREvent.target.result, 307).then((value: any): void | PromiseLike<void> => {
-              this.avatarImage.src = value.toString();
+              this._photo = value.toString();
+              this.avatarImage.src = this._photo;
               this.avatarLabel.classList.add('loaded');
               this.avatarLabel.classList.remove('loading');
             });
           } else {
+            this._photo = oFREvent.target.result;
             this.avatarLabel.classList.add('loaded');
-            this.avatarImage.src = oFREvent.target.result;
+            this.avatarImage.src = this._photo;
           }
         }
       };
     }
   };
+
+  public get email(): string {
+    return this._email.value;
+  }
+
+  public set email(value: string) {
+    this._email.value = value;
+  }
+
+  public get surname(): string {
+    return this._surname.value;
+  }
+
+  public set surname(value: string) {
+    this._surname.value = value;
+  }
+
+  public get name(): string {
+    return this._name.value;
+  }
+
+  public set name(value: string) {
+    this._name.value = value;
+  }
+
+  public get photo(): string {
+    return this._photo;
+  }
+
+  public set photo(value: string) {
+    this._photo = value;
+  }
 }

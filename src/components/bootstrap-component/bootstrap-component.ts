@@ -20,6 +20,7 @@ export default class BootstrapComponent {
     listItems?: Array<string>,
     invalid?: string,
     isRequired?: boolean
+    pattern?: string,
   }) {
     const {
       type,
@@ -34,14 +35,23 @@ export default class BootstrapComponent {
       listItems,
       invalid,
       isRequired,
+      pattern,
     } = properties;
     const { input, select, list } = BootstrapType;
 
     if (type === input) {
       this.targetElement = isRequired ? createElement('input', ['form-control', ...classes],
-        [['id', id], ['placeholder', placeholder], ['type', typeInput], ['required', '']])
-        : createElement('input', ['form-control', ...classes],
-          [['id', id], ['placeholder', placeholder], ['type', typeInput]]);
+        [
+          ['id', id],
+          ['placeholder', placeholder], ['type', typeInput], ['required', ''],
+          // delete slashes
+          ['pattern', pattern.substring(1, pattern.length - 1)],
+        ]) : createElement('input', ['form-control', ...classes],
+        [
+          ['id', id],
+          ['placeholder', placeholder],
+          ['type', typeInput],
+        ]);
       const label = createElement('label', [], [['for', id]]);
       let errorText:HTMLElement;
 

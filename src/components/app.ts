@@ -10,7 +10,7 @@ import Game from './game/game';
 import Registration from './registration/registration';
 import Router from './router/router';
 
-// We are only using the user-astronaut icon
+// We are only using the usser-astronaut icon
 library.add(faTrophy, faCog, faQuestion, faWarehouse, faSpinner);
 
 // Replace any existing <i> tags with <svg> and set up a MutationObserver to

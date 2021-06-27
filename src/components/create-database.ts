@@ -167,16 +167,17 @@ export default class CreateDatabase {
         email, surname, name,
       } = this.registration;
       // console.log(this.registration.name);
+      console.log((<HTMLFormElement>modalForm).checkValidity());
 
       if (!(<HTMLFormElement> modalForm).checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
-      }
-      // console.log(`email = ${email}`);
-      // console.log(`surname = ${surname}`);
-      // console.log(`name = ${name}`);
-      // console.log(`oFReader = ${oFReader?.result} photo = ${photo}`);
-      if (email.length && surname.length && name.length) {
+      } else if (email.length && surname.length && name.length) {
+        // console.log(`email = ${email}`);
+        // console.log(`surname = ${surname}`);
+        // console.log(`name = ${name}`);
+        // console.log(`oFReader = ${oFReader?.result} photo = ${photo}`);
+
         // console.log(`email = ${email}`);
         // console.log(`surname = ${surname}`);
         // console.log(`name = ${name}`);

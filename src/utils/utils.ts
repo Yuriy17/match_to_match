@@ -1,3 +1,4 @@
+
 export const createElement = (
   tag: keyof HTMLElementTagNameMap = 'div',
   styles: string[] = [],
@@ -30,6 +31,39 @@ export const toggleClass = (
   elements: Array<HTMLElement>, style: string,
 ):void => elements.forEach((element) => element.classList.toggle(style));
 
+// export const successPopup = ():void => {
+//   const modal = new Modal({
+//       id: this.id,
+//       body: {
+//         elements: [col1, col2],
+//       },
+//       header: {
+//         title: 'Error',
+//       },
+//       footer: {
+//         isSpaceBetween: false,
+//         elements: [buttonCancel, buttonSubmit],
+//       },
+//       isForm: false,
+//     }
+// });
+
+// export const errorPopup = ():void => {
+//   const modal = new Modal({
+//       id: this.id,
+//       body: {
+//         elements: [col1, col2],
+//       },
+//       header: {
+//         title: 'Error',
+//       },
+//       footer: {
+//         isSpaceBetween: false,
+//         elements: [buttonCancel, buttonSubmit],
+//       },
+//       isForm: false,
+//     }
+// });
 // export const preventForm = (form: HTMLFormElement):void => {
 //   form.addEventListener('submit', (event) => {
 //     if (!form.checkValidity()) {

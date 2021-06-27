@@ -52,9 +52,11 @@ export default class Game extends BaseComponent {
 
   pauseHandler = ():void => {
     if (this.isPause) {
+      this.element.classList.add('game_on');
       this.isPause = false;
       this.timer.startTimer();
     } else {
+      this.element.classList.remove('game_on');
       this.isPause = true;
       this.timer.stopTimer();
     }

@@ -85,7 +85,7 @@ export default class Registration {
 
   avatarImage: HTMLImageElement;
 
-  avatarLabel:HTMLElement;
+  avatarLabel: HTMLElement;
 
   oFReader: FileReader;
 
@@ -97,9 +97,11 @@ export default class Registration {
     this.button = this.createLink(this.id);
   }
 
-  validate = (input: HTMLElement, regex: RegExp, errorMessage: string):void => {
-
-  };
+  validate = (
+    input: HTMLElement,
+    regex: RegExp,
+    errorMessage: string,
+  ): void => {};
 
   createModal = (): ModalConfig => {
     const col1 = createElement('div', ['col-12', 'col-md-6']);
@@ -125,7 +127,8 @@ export default class Registration {
       placeholder: 'First Name',
       floatLabel: 'First Name',
       isRequired: true,
-      invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
+      invalid:
+        'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
       pattern: patterns.username.toString(),
     });
     const inputSurname = new BootstrapComponent({
@@ -136,7 +139,8 @@ export default class Registration {
       placeholder: 'Last Name',
       floatLabel: 'Last Name',
       isRequired: true,
-      invalid: 'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
+      invalid:
+        'enter without: whitespaces, only numbers, ~ ! @ # $ % * () _ — + = | : ; " \' ` < > , . ? / ^',
       pattern: patterns.surname.toString(),
     });
     const inputEmail = new BootstrapComponent({
@@ -154,9 +158,11 @@ export default class Registration {
     this._surname = <HTMLInputElement>inputSurname.targetElement;
     this._name = <HTMLInputElement>inputName.targetElement;
     const avatar = createElement('div', ['avatar']);
-    this.avatarLabel = createElement('label',
+    this.avatarLabel = createElement(
+      'label',
       ['avatar__label'],
-      [['for', 'avatar_file']]);
+      [['for', 'avatar_file']],
+    );
     this.avatarImage = createImageElement(
       'img',
       ['avatar__image'],
@@ -209,8 +215,18 @@ export default class Registration {
         });
       }
     }
-    const loadingIcon = createElement('i', ['fas', 'fa-spinner', 'fa-spin', 'fa-5x']);
-    this.avatarLabel.append(this.avatarImage, avatarDefaultImage, avatarImageHover, loadingIcon);
+    const loadingIcon = createElement('i', [
+      'fas',
+      'fa-spinner',
+      'fa-spin',
+      'fa-5x',
+    ]);
+    this.avatarLabel.append(
+      this.avatarImage,
+      avatarDefaultImage,
+      avatarImageHover,
+      loadingIcon,
+    );
     avatar.append(this.avatarLabel, avatarTrashIcon, fileInput);
 
     buttonCancel.innerText = 'cancel';
@@ -248,7 +264,7 @@ export default class Registration {
     return link;
   };
 
-  previewListener = (e: Event):void => {
+  previewListener = (e: Event): void => {
     const uploadInput = <HTMLInputElement>e.currentTarget;
 
     if (this.avatarLabel && this.avatarImage && uploadInput.value !== '') {
@@ -259,12 +275,14 @@ export default class Registration {
         if (typeof oFREvent.target.result === 'string') {
           if (uploadInput.files[0].size > 307200) {
             this.avatarLabel.classList.add('loading');
-            resizeBase64Img(oFREvent.target.result, 307).then((value: any): void | PromiseLike<void> => {
-              this._photo = value.toString();
-              this.avatarImage.src = this._photo;
-              this.avatarLabel.classList.add('loaded');
-              this.avatarLabel.classList.remove('loading');
-            });
+            resizeBase64Img(oFREvent.target.result, 307).then(
+              (value: any): void | PromiseLike<void> => {
+                this._photo = value.toString();
+                this.avatarImage.src = this._photo;
+                this.avatarLabel.classList.add('loaded');
+                this.avatarLabel.classList.remove('loading');
+              },
+            );
           } else {
             this._photo = oFREvent.target.result;
             this.avatarLabel.classList.add('loaded');
@@ -273,6 +291,24 @@ export default class Registration {
         }
       };
     }
+  };
+
+  successPopup = (text = 'success!', surname: string, name: string): Modal => {
+    const iconElement = createElement('i', ['fa', 'fa-check']);
+    const textElement = createElement('p', ['modal-text']);
+    textElement.innerText = `${surname} ${name}!
+    ${text}`;
+    const containerElement = createElement('div', ['modal-container']);
+    containerElement.append(iconElement, textElement);
+    return new Modal({
+      id: 'successPopup',
+      body: {
+        elements: [containerElement],
+      },
+      header: {
+        title: 'Success',
+      },
+    });
   };
 
   public get email(): string {

@@ -9,22 +9,36 @@
   }
   &-dialog-scrollable {
   }
-  
+
   &-content {
   }
   &-header {
   }
   &-title {
   }
-  
+
   &-body {
   }
-  
+
   &-footer {
   }
   .invalid-feedback {
     font-size: 11px;
   }
-  
+  &-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    svg {
+      font-size: 6rem;
+      & > path {
+        fill: green;
+      }
+    }
+  }
+  &-text {
+    margin-top: 20px;
+    font-size: 1.5rem;
+  }
 }
 

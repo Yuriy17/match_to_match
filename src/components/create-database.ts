@@ -6,17 +6,23 @@ function idbOK() {
 }
 
 export default class CreateDatabase {
-  private openRequest:IDBOpenDBRequest;
+  private openRequest: IDBOpenDBRequest;
 
   db: IDBDatabase;
 
-  peopleOS:IDBObjectStore;
+  peopleOS: IDBObjectStore;
+
+  protected isRegistered: boolean;
+
+  protected isLoggedIn: boolean;
 
   constructor(private registration: Registration) {
+    this.isRegistered = false;
+    this.isLoggedIn = false;
     this.init();
   }
 
-  init():void {
+  init(): void {
     // No support? Go in the corner and pout.
     if (!idbOK()) return;
 
@@ -31,18 +37,17 @@ export default class CreateDatabase {
     this.formValidation();
   }
 
-  onupgradeneeded = (e:Event):void => {
+  onupgradeneeded = (e: Event): void => {
     const request = <IDBRequest>e.target;
     const thisDB = request.result;
     console.log('running onupgradeneeded');
 
     if (!thisDB.objectStoreNames.contains('people')) {
-      this.peopleOS = thisDB.createObjectStore('people',
-        { keyPath: 'email' });
+      this.peopleOS = thisDB.createObjectStore('people', { keyPath: 'email' });
     }
   };
 
-  onsuccess = (e:Event):void => {
+  onsuccess = (e: Event): void => {
     console.log('running onsuccess');
     const request = <IDBRequest>e.target;
     this.db = request.result;
@@ -51,7 +56,7 @@ export default class CreateDatabase {
     // $('#addPerson').on('click', this.addPerson);
   };
 
-  addPerson = (email:string, surname:string, name:string):void => {
+  addPerson = (email: string, surname: string, name: string): void => {
     const { photo, avatarLabel } = this.registration;
 
     console.log(`About to add ${name}/${email}/${surname}/${photo}`);
@@ -64,7 +69,7 @@ export default class CreateDatabase {
 
     // Define a person
     const person = {
-      photo: avatarLabel.classList.contains('loaded') ? photo : undefined,
+      photo: avatarLabel.classList.contains('loaded') ? photo : null,
       name,
       surname,
       email,
@@ -74,18 +79,19 @@ export default class CreateDatabase {
     // Perform the add
     const request = store.add(person);
 
-    request.onerror = (e:Event):void => {
+    request.onerror = (e: Event): void => {
       const req = <IDBRequest>e.target;
       console.log('Error', req.error.name);
       // some type of error handler
     };
 
-    request.onsuccess = ():void => {
-      console.log('Woot! Did it');
+    request.onsuccess = (): void => {
+      this.isLoggedIn = true;
+      console.log(`Woot! Did it \n ${this.isLoggedIn}`);
     };
   };
 
-  getPerson = ():void => {
+  getPerson = (): void => {
     const key = $('#getemail').val();
     if (key === '') return;
 
@@ -94,19 +100,19 @@ export default class CreateDatabase {
 
     const request = store.get(key);
 
-    request.onsuccess = (event:Event):void => {
+    request.onsuccess = (event: Event): void => {
       const req = <IDBRequest>event.target;
       console.dir(req.result);
     };
 
-    request.onerror = (event:Event):void => {
+    request.onerror = (event: Event): void => {
       console.log('Error');
       const req = <IDBRequest>event.target;
       console.dir(req.result);
     };
   };
 
-  updatePerson = ():void => {
+  updatePerson = (): void => {
     const name = $('#name').val();
     const email = $('#email').val();
     const created = $('#created').val();
@@ -128,19 +134,18 @@ export default class CreateDatabase {
     // Perform the update
     const request = store.put(person);
 
-    request.onerror = (event:Event):void => {
+    request.onerror = (event: Event): void => {
       const req = <IDBRequest>event.target;
       console.log('Error', req.error.name);
-    // some type of error handler
+      // some type of error handler
     };
 
-    request.onsuccess = ():void => {
+    request.onsuccess = (): void => {
       console.log('Woot! Did it');
     };
-  }
-  ;
+  };
 
-  deletePerson = ():void => {
+  deletePerson = (): void => {
     const key = $('#email').val();
     if (key === '') return;
 
@@ -149,27 +154,25 @@ export default class CreateDatabase {
 
     const request = store.delete(key);
 
-    request.onsuccess = (event:Event) => {
+    request.onsuccess = (event: Event) => {
       console.log('Person deleted');
       console.dir(event);
     };
 
-    request.onerror = (event:Event) => {
+    request.onerror = (event: Event) => {
       console.log('Error');
       console.dir(event);
     };
   };
 
-  formValidation = ():void => {
-    const { modalForm } = this.registration;
-    modalForm.onsubmit = (event:Event):boolean => {
-      const {
-        email, surname, name,
-      } = this.registration;
+  formValidation = (): void => {
+    const { modalForm, modal, successPopup } = this.registration;
+    modalForm.onsubmit = (event: Event): boolean => {
+      const { email, surname, name } = this.registration;
       // console.log(this.registration.name);
       console.log((<HTMLFormElement>modalForm).checkValidity());
 
-      if (!(<HTMLFormElement> modalForm).checkValidity()) {
+      if (!(<HTMLFormElement>modalForm).checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length && surname.length && name.length) {
@@ -182,6 +185,9 @@ export default class CreateDatabase {
         // console.log(`surname = ${surname}`);
         // console.log(`name = ${name}`);
         this.addPerson(email, surname, name);
+        const modalS = successPopup('success test', surname, name);
+        modalS.jsModal.show();
+        modal.jsModal.hide();
       }
 
       modalForm.classList.add('was-validated');

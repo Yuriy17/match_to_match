@@ -34,7 +34,7 @@ export default class CreateDatabase {
 
     // eslint-disable-next-line no-console
     this.openRequest.onerror = (e) => console.dir(e);
-    this.formValidation();
+    this.addFormValidation();
   }
 
   onupgradeneeded = (e: Event): void => {
@@ -165,25 +165,15 @@ export default class CreateDatabase {
     };
   };
 
-  formValidation = (): void => {
-    const { modalForm, modal, successPopup } = this.registration;
+  addFormValidation = (): void => {
+    const { regModalForm: modalForm, regModal: modal, successPopup } = this.registration;
     modalForm.onsubmit = (event: Event): boolean => {
       const { email, surname, name } = this.registration;
-      // console.log(this.registration.name);
-      console.log((<HTMLFormElement>modalForm).checkValidity());
 
       if (!(<HTMLFormElement>modalForm).checkValidity()) {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length && surname.length && name.length) {
-        // console.log(`email = ${email}`);
-        // console.log(`surname = ${surname}`);
-        // console.log(`name = ${name}`);
-        // console.log(`oFReader = ${oFReader?.result} photo = ${photo}`);
-
-        // console.log(`email = ${email}`);
-        // console.log(`surname = ${surname}`);
-        // console.log(`name = ${name}`);
         this.addPerson(email, surname, name);
         const modalS = successPopup('success test', surname, name);
         modalS.jsModal.show();

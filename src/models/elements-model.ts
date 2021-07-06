@@ -15,4 +15,10 @@ export interface ModalConfig {
   };
   isLink?: boolean;
   isForm?: boolean;
+  size?: string;
 }
+export type LogButtons = {
+  regButton: HTMLElement;
+  logInButton: HTMLElement;
+  logOutButton: HTMLElement;
+};

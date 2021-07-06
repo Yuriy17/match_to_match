@@ -29,12 +29,14 @@ export default class Modal extends BaseComponent {
         ['aria-hidden', 'true'],
       ],
     );
+
     const modalFragment = document.createDocumentFragment();
     modalFragment.append(
       this.createModal(
         properties.header,
         properties.body,
         properties.isForm ? properties.isForm : false,
+        properties.size ? properties.size : 'lg',
         properties.footer ? properties.footer : null,
       ),
     );
@@ -46,11 +48,12 @@ export default class Modal extends BaseComponent {
     header: { title: string },
     body: { elements: Array<HTMLElement> },
     isForm: boolean,
+    size: string,
     footer?: { isSpaceBetween: boolean; elements: Array<HTMLElement> },
   ): HTMLElement => {
     const modalDialog = createElement('div', [
       'modal-dialog',
-      'modal-lg',
+      `modal-${size}`,
       'modal-dialog-centered',
       'modal-dialog-scrollable',
     ]);
@@ -92,8 +95,12 @@ export default class Modal extends BaseComponent {
   };
 
   addBody = (elements: Array<HTMLElement>): HTMLElement => {
-    const body = createElement('div', ['modal-body', 'row']);
-    body.append(...elements);
+    const body = createElement('div', ['modal-body']);
+    const container = createElement('div', ['container']);
+    const row = createElement('div', ['row']);
+    row.append(...elements);
+    container.append(row);
+    body.append(container);
     return body;
   };
 

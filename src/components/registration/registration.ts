@@ -1,4 +1,4 @@
-import { ModalConfig } from '../../models/elements-model';
+import { LogButtons, ModalConfig } from '../../models/elements-model';
 /* eslint-disable no-control-regex */
 import { BootstrapType } from '../../utils/constant';
 import { createElement, createImageElement } from '../../utils/utils';
@@ -65,9 +65,13 @@ const clearInputFile = (f: any) => {
 };
 
 export default class Registration {
-  readonly modal: Modal;
+  readonly regModal: Modal;
 
-  readonly modalForm: HTMLElement;
+  readonly logInModal: Modal;
+
+  readonly regModalForm: HTMLElement;
+
+  readonly logInModalForm: HTMLElement;
 
   private _email: HTMLInputElement;
 
@@ -77,11 +81,11 @@ export default class Registration {
 
   private _photo: string;
 
-  readonly button: HTMLElement;
-
   readonly element: HTMLElement;
 
-  readonly id: string = 'registration';
+  readonly regId: string = 'registration';
+
+  readonly logInId: string = 'login';
 
   avatarImage: HTMLImageElement;
 
@@ -89,12 +93,24 @@ export default class Registration {
 
   oFReader: FileReader;
 
+  buttonElements: LogButtons;
+
   constructor() {
-    this.modal = new Modal(this.createModal());
-    this.modalForm = this.modal.modalContent;
     // this.formValidation();
-    this.element = this.modal.element;
-    this.button = this.createLink(this.id);
+
+    this.buttonElements = {
+      regButton: this.createLink(
+        this.regId,
+        'register new player',
+      ),
+      logInButton: this.createLink(this.logInId, 'log in'),
+      logOutButton: this.createLink('logOut', 'log out'),
+    };
+
+    this.regModal = new Modal(this.createRegModal());
+    this.regModalForm = this.regModal.modalContent;
+    this.logInModal = new Modal(this.createLogInModal());
+    this.logInModalForm = this.regModal.modalContent;
   }
 
   validate = (
@@ -103,7 +119,7 @@ export default class Registration {
     errorMessage: string,
   ): void => {};
 
-  createModal = (): ModalConfig => {
+  createRegModal = (): ModalConfig => {
     const col1 = createElement('div', ['col-12', 'col-md-6']);
     const col2 = createElement('div', ['col-12', 'col-md-6']);
     const buttonSubmit = createElement(
@@ -230,13 +246,13 @@ export default class Registration {
     avatar.append(this.avatarLabel, avatarTrashIcon, fileInput);
 
     buttonCancel.innerText = 'cancel';
-    buttonSubmit.innerText = 'submit';
+    buttonSubmit.innerText = 'register';
 
     col1.append(inputName.element, inputSurname.element, inputEmail.element);
     col2.append(avatar);
 
     return {
-      id: this.id,
+      id: this.regId,
       body: {
         elements: [col1, col2],
       },
@@ -251,7 +267,55 @@ export default class Registration {
     };
   };
 
-  createLink = (id: string): HTMLElement => {
+  createLogInModal = (): ModalConfig => {
+    const buttonSubmit = createElement(
+      'button',
+      ['btn-primary', 'btn'],
+      [['type', 'submit']],
+    );
+    const buttonCancel = createElement(
+      'button',
+      ['btn-secondary', 'btn'],
+      [
+        ['type', 'button'],
+        ['data-bs-dismiss', 'modal'],
+      ],
+    );
+
+    const inputEmail = new BootstrapComponent({
+      type: BootstrapType.input,
+      typeInput: 'email',
+      classes: ['input-email'],
+      id: 'inputEmail',
+      placeholder: 'E-mail',
+      floatLabel: 'E-mail',
+      isRequired: true,
+      invalid: 'enter email in format test@test.com',
+      pattern: patterns.email.toString(),
+    });
+    this._email = <HTMLInputElement>inputEmail.targetElement;
+
+    buttonCancel.innerText = 'cancel';
+    buttonSubmit.innerText = 'login';
+
+    return {
+      id: this.logInId,
+      body: {
+        elements: [inputEmail.element],
+      },
+      header: {
+        title: 'Logging in',
+      },
+      footer: {
+        isSpaceBetween: false,
+        elements: [buttonCancel, buttonSubmit],
+      },
+      isForm: true,
+      size: 'sm',
+    };
+  };
+
+  createLink = (id: string, text: string): HTMLElement => {
     const link = createElement(
       'button',
       ['auth-button', 'btn'],
@@ -260,7 +324,7 @@ export default class Registration {
         ['data-bs-target', `#${id}`],
       ],
     );
-    link.innerText = 'register new player';
+    link.innerText = text;
     return link;
   };
 

@@ -41,6 +41,7 @@ header {
     padding: 0 3vw;
     flex-direction: column;
     @include media(md) {
+      flex-direction: row;
       justify-content: space-between;
     }
   }

@@ -1,11 +1,12 @@
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
 import Main from './content/main';
-import CreateDatabase from './create-database';
+import CurrentPerson from './current-person';
+import Database from './database';
+import Entry from './entry/entry';
 import Footer from './footer/footer';
 import Game from './game/game';
 import Header from './header/header';
-import Registration from './registration/registration';
 import Router from './router/router';
 
 export default class App {
@@ -17,22 +18,29 @@ export default class App {
 
   private readonly main: Main;
 
-  private readonly registration: Registration;
+  private readonly entry: Entry;
 
   private readonly router: Router;
 
-  private readonly createDatabase: CreateDatabase;
+  private readonly database: Database;
+
+  private readonly currentPerson: CurrentPerson;
 
   private elements: Elements = {};
 
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game();
-    this.registration = new Registration();
-    this.createDatabase = new CreateDatabase(this.registration);
-    this.footer = new Footer();
-    this.header = new Header(
-      this.registration.buttonElements,
+    this.currentPerson = new CurrentPerson();
+
+    this.database = new Database(this.currentPerson.setCurrentPerson);
+    this.entry = new Entry(
+      this.currentPerson.name,
+      this.currentPerson.surname,
+      this.database.addPerson,
+      this.database.getPerson,
     );
+    this.footer = new Footer();
+    this.header = new Header(this.entry.buttonElements);
     this.main = new Main();
     this.initLayout();
     this.router = new Router();
@@ -48,8 +56,8 @@ export default class App {
       this.header.element,
       this.main.element,
       this.footer.element,
-      this.registration.regModal.element,
-      this.registration.logInModal.element,
+      this.entry.regModal.element,
+      this.entry.logInModal.element,
     );
   };
 

@@ -17,7 +17,7 @@ export interface ModalConfig {
   isForm?: boolean;
   size?: string;
 }
-export type LogButtons = {
+export type EntryButtons = {
   regButton: HTMLElement;
   logInButton: HTMLElement;
   logOutButton: HTMLElement;

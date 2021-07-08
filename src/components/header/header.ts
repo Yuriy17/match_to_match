@@ -1,12 +1,12 @@
-import { LogButtons } from '../../models/elements-model';
+import { EntryButtons } from '../../models/elements-model';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
 import './header.scss';
 
 export default class Header extends BaseComponent implements Observer {
-  logButtons: LogButtons;
+  logButtons: EntryButtons;
 
-  constructor(logButtons: LogButtons) {
+  constructor(logButtons: EntryButtons) {
     super('header', ['header']);
     this.logButtons = logButtons;
   }

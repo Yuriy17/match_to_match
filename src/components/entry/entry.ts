@@ -1,10 +1,11 @@
-import { LogButtons, ModalConfig } from '../../models/elements-model';
+import { EntryButtons, ModalConfig } from '../../models/elements-model';
+import { PersonFields } from '../../models/person-model';
 /* eslint-disable no-control-regex */
 import { BootstrapType } from '../../utils/constant';
 import { createElement, createImageElement } from '../../utils/utils';
 import BootstrapComponent from '../bootstrap-component/bootstrap-component';
 import Modal from '../modal/modal';
-import './registration.scss';
+import './entry.scss';
 
 /**
  * Resize a base 64 Image
@@ -64,28 +65,28 @@ const clearInputFile = (f: any) => {
   }
 };
 
-export default class Registration {
-  readonly regModal: Modal;
+export default class Entry {
+  readonly element: HTMLElement;
+
+  readonly logInId: string = 'login';
 
   readonly logInModal: Modal;
 
-  readonly regModalForm: HTMLElement;
-
   readonly logInModalForm: HTMLElement;
 
-  private _email: HTMLInputElement;
-
-  private _surname: HTMLInputElement;
-
-  private _name: HTMLInputElement;
-
-  private _photo: string;
-
-  readonly element: HTMLElement;
+  private logInEmailElement: HTMLInputElement;
 
   readonly regId: string = 'registration';
 
-  readonly logInId: string = 'login';
+  readonly regModalForm: HTMLElement;
+
+  readonly regModal: Modal;
+
+  private regEmailElement: HTMLInputElement;
+
+  private regSurnameElement: HTMLInputElement;
+
+  private regNameElement: HTMLInputElement;
 
   avatarImage: HTMLImageElement;
 
@@ -93,16 +94,18 @@ export default class Registration {
 
   oFReader: FileReader;
 
-  buttonElements: LogButtons;
+  buttonElements: EntryButtons;
 
-  constructor() {
+  constructor(
+    private name: string,
+    private surname: string,
+    private addPerson: (personFields: PersonFields) => void,
+    private getPerson: (email: string) => void,
+  ) {
     // this.formValidation();
 
     this.buttonElements = {
-      regButton: this.createLink(
-        this.regId,
-        'register new player',
-      ),
+      regButton: this.createLink(this.regId, 'register new player'),
       logInButton: this.createLink(this.logInId, 'log in'),
       logOutButton: this.createLink('logOut', 'log out'),
     };
@@ -111,6 +114,8 @@ export default class Registration {
     this.regModalForm = this.regModal.modalContent;
     this.logInModal = new Modal(this.createLogInModal());
     this.logInModalForm = this.regModal.modalContent;
+
+    this.addFormValidation();
   }
 
   validate = (
@@ -170,9 +175,9 @@ export default class Registration {
       invalid: 'enter email in format test@test.com',
       pattern: patterns.email.toString(),
     });
-    this._email = <HTMLInputElement>inputEmail.targetElement;
-    this._surname = <HTMLInputElement>inputSurname.targetElement;
-    this._name = <HTMLInputElement>inputName.targetElement;
+    this.regEmailElement = <HTMLInputElement>inputEmail.targetElement;
+    this.regSurnameElement = <HTMLInputElement>inputSurname.targetElement;
+    this.regNameElement = <HTMLInputElement>inputName.targetElement;
     const avatar = createElement('div', ['avatar']);
     this.avatarLabel = createElement(
       'label',
@@ -293,7 +298,7 @@ export default class Registration {
       invalid: 'enter email in format test@test.com',
       pattern: patterns.email.toString(),
     });
-    this._email = <HTMLInputElement>inputEmail.targetElement;
+    this.logInEmailElement = <HTMLInputElement>inputEmail.targetElement;
 
     buttonCancel.innerText = 'cancel';
     buttonSubmit.innerText = 'login';
@@ -341,16 +346,14 @@ export default class Registration {
             this.avatarLabel.classList.add('loading');
             resizeBase64Img(oFREvent.target.result, 307).then(
               (value: any): void | PromiseLike<void> => {
-                this._photo = value.toString();
-                this.avatarImage.src = this._photo;
+                this.avatarImage.src = value.toString();
                 this.avatarLabel.classList.add('loaded');
                 this.avatarLabel.classList.remove('loading');
               },
             );
           } else {
-            this._photo = oFREvent.target.result;
             this.avatarLabel.classList.add('loaded');
-            this.avatarImage.src = this._photo;
+            this.avatarImage.src = oFREvent.target.result;
           }
         }
       };
@@ -375,35 +378,104 @@ export default class Registration {
     });
   };
 
-  public get email(): string {
-    return this._email.value;
-  }
+  addFormValidation = (): void => {
+    const {
+      regModalForm, regModal, logInModal, logInModalForm, successPopup,
+    } = this;
 
-  public set email(value: string) {
-    this._email.value = value;
-  }
+    regModalForm.onsubmit = (event: Event): boolean => {
+      const email = this.regEmailElement.value;
+      const surname = this.regSurnameElement.value;
+      const name = this.regNameElement.value;
 
-  public get surname(): string {
-    return this._surname.value;
-  }
+      if (!(<HTMLFormElement>regModalForm).checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else if (email.length && surname.length && name.length) {
+        this.addPerson(
+          {
+            email,
+            surname,
+            name,
+            photo: this.avatarLabel.classList.contains('loaded')
+              ? this.avatarImage.src
+              : null,
+            created: new Date().getTime(),
+          },
+        );
+        const modalS = successPopup(
+          'Success! You are registered!',
+          surname,
+          name,
+        );
+        regModal.jsModal.hide();
+        modalS.jsModal.show();
+      }
 
-  public set surname(value: string) {
-    this._surname.value = value;
-  }
+      regModalForm.classList.add('was-validated');
+      return false;
+    };
+    console.log(logInModalForm);
+    logInModalForm.onsubmit = (event: Event): boolean => {
+      console.log('aa');
+      const email = this.logInEmailElement.value;
 
-  public get name(): string {
-    return this._name.value;
-  }
+      if (!(<HTMLFormElement>logInModalForm).checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      } else if (email.length) {
+        this.getPerson(email);
+        const modalS = successPopup(
+          'Success! You are logged in!',
+          this.surname,
+          this.name,
+        );
+        logInModal.jsModal.hide();
+        modalS.jsModal.show();
+      }
 
-  public set name(value: string) {
-    this._name.value = value;
-  }
+      logInModalForm.classList.add('was-validated');
+      return false;
+    };
+  };
 
-  public get photo(): string {
-    return this._photo;
-  }
+  // public get regEmail(): string {
+  //   return this.regEmailElement.value;
+  // }
 
-  public set photo(value: string) {
-    this._photo = value;
-  }
+  // public set regEmail(value: string) {
+  //   this.regEmailElement.value = value;
+  // }
+
+  // public get logInEmail(): string {
+  //   return this.logInEmailElement.value;
+  // }
+
+  // public set logInEmail(value: string) {
+  //   this.logInEmailElement.value = value;
+  // }
+
+  // public get surname(): string {
+  //   return this.regSurnameElement.value;
+  // }
+
+  // public set surname(value: string) {
+  //   this.regSurnameElement.value = value;
+  // }
+
+  // public get name(): string {
+  //   return this.regNameElement.value;
+  // }
+
+  // public set name(value: string) {
+  //   this.regNameElement.value = value;
+  // }
+
+  // public get photo(): string {
+  //   return this._photo;
+  // }
+
+  // public set photo(value: string) {
+  //   this._photo = value;
+  // }
 }

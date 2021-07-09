@@ -6,6 +6,7 @@
  * Интферфейс издателя объявляет набор методов для управлениями подписчиками.
  */
 export interface Subject {
+  state: string,
   // Присоединяет наблюдателя к издателю.
   attach(observer: Observer): void;
 

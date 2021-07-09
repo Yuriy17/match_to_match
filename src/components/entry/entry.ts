@@ -97,13 +97,16 @@ export default class Entry {
   buttonElements: EntryButtons;
 
   constructor(
-    private name: string,
-    private surname: string,
-    private addPerson: (personFields: PersonFields) => void,
-    private getPerson: (email: string) => void,
+    private addPerson: (
+      personFields: PersonFields,
+      changeEntryState: (state: string) => void
+    ) => void,
+    private getPerson: (
+      email: string,
+      changeEntryState: (state: string) => void
+    ) => void,
+    private changeEntryState: (state: string) => void,
   ) {
-    // this.formValidation();
-
     this.buttonElements = {
       regButton: this.createLink(this.regId, 'register new player'),
       logInButton: this.createLink(this.logInId, 'log in'),
@@ -119,11 +122,11 @@ export default class Entry {
     this.addRegFormValidation();
   }
 
-  validate = (
-    input: HTMLElement,
-    regex: RegExp,
-    errorMessage: string,
-  ): void => {};
+  // validate = (
+  //   input: HTMLElement,
+  //   regex: RegExp,
+  //   errorMessage: string,
+  // ): void => {};
 
   createRegModal = (): ModalConfig => {
     const col1 = createElement('div', ['col-12', 'col-md-6']);
@@ -379,9 +382,7 @@ export default class Entry {
   };
 
   addRegFormValidation = (): void => {
-    const {
-      regModalForm, regModal, successPopup,
-    } = this;
+    const { regModalForm, regModal, successPopup } = this;
     regModalForm.onsubmit = (event: Event): boolean => {
       const email = this.regEmailElement.value;
       const surname = this.regSurnameElement.value;
@@ -391,18 +392,19 @@ export default class Entry {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length && surname.length && name.length) {
-        this.addPerson({
-          email,
-          surname,
-          name,
-          photo: this.avatarLabel.classList.contains('loaded')
-            ? this.avatarImage.src
-            : null,
-          created: new Date().getTime(),
-        });
-        const modalS = successPopup(
-          'Success! You are registered!',
+        this.addPerson(
+          {
+            email,
+            surname,
+            name,
+            photo: this.avatarLabel.classList.contains('loaded')
+              ? this.avatarImage.src
+              : null,
+            created: new Date().getTime(),
+          },
+          this.changeEntryState,
         );
+        const modalS = successPopup('Success! You are registered!');
         regModal.jsModal.hide();
         modalS.jsModal.show();
       }
@@ -413,9 +415,7 @@ export default class Entry {
   };
 
   addLogInFormValidation = (): void => {
-    const {
-      logInModal, logInModalForm, successPopup,
-    } = this;
+    const { logInModal, logInModalForm, successPopup } = this;
     logInModalForm.onsubmit = (event: Event): boolean => {
       const email = this.logInEmailElement.value;
 
@@ -423,7 +423,7 @@ export default class Entry {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length) {
-        this.getPerson(email);
+        this.getPerson(email, this.changeEntryState);
         const modalS = successPopup('Success! You are logged in!');
         logInModal.jsModal.hide();
         modalS.jsModal.show();

@@ -3,3 +3,8 @@ export const BootstrapType = {
   input: 'input',
   list: 'list',
 };
+export const State = {
+  loggedOut: 'loggedOut',
+  loggedIn: 'loggedIn',
+  registered: 'registered',
+};

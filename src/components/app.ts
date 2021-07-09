@@ -1,5 +1,6 @@
 import { Elements } from '../models/elements-model';
 import { ImageCategoryModel } from '../models/image-category-models';
+import ConcreteSubject from './concrete-subject';
 import Main from './content/main';
 import CurrentPerson from './current-person';
 import Database from './database';
@@ -7,6 +8,7 @@ import Entry from './entry/entry';
 import Footer from './footer/footer';
 import Game from './game/game';
 import Header from './header/header';
+import HeaderControl from './header/header-control';
 import Router from './router/router';
 
 export default class App {
@@ -16,7 +18,11 @@ export default class App {
 
   private readonly header: Header;
 
+  private readonly headerControl: HeaderControl;
+
   private readonly main: Main;
+
+  private readonly subject: ConcreteSubject;
 
   private readonly entry: Entry;
 
@@ -33,14 +39,16 @@ export default class App {
     this.currentPerson = new CurrentPerson();
 
     this.database = new Database(this.currentPerson.setCurrentPerson);
+    this.subject = new ConcreteSubject();
     this.entry = new Entry(
-      this.currentPerson.name,
-      this.currentPerson.surname,
       this.database.addPerson,
       this.database.getPerson,
+      this.subject.changeEntryState,
     );
     this.footer = new Footer();
-    this.header = new Header(this.entry.buttonElements);
+    this.headerControl = new HeaderControl(this.entry.buttonElements);
+    this.subject.attach(this.headerControl);
+    this.header = new Header(this.headerControl.element);
     this.main = new Main();
     this.initLayout();
     this.router = new Router();

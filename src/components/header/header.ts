@@ -3,12 +3,11 @@ import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
 import './header.scss';
 
-export default class Header extends BaseComponent implements Observer {
+export default class Header extends BaseComponent {
   logButtons: EntryButtons;
 
-  constructor(logButtons: EntryButtons) {
+  constructor(private controlContainer: HTMLElement) {
     super('header', ['header']);
-    this.logButtons = logButtons;
   }
 
   initLayout = (): void => {
@@ -40,7 +39,7 @@ export default class Header extends BaseComponent implements Observer {
     const scoreIcon = createElement('i', ['fa', 'fa-trophy']);
     const settingsIcon = createElement('i', ['fa', 'fa-cog']);
     const aboutIcon = createElement('i', ['fa', 'fa-question']);
-    const buttonsContainer = createElement('div', ['buttons-container']);
+
     navAboutIcon.append(aboutIcon);
     navSettingsIcon.append(settingsIcon);
     navScoreIcon.append(scoreIcon);
@@ -52,17 +51,7 @@ export default class Header extends BaseComponent implements Observer {
     scoreLink.append(navScoreIcon, navScoreText);
     nav.append(aboutLink, settingsLink, scoreLink);
     logo.append(logoIcon);
-    buttonsContainer.append(
-      this.logButtons.regButton,
-      this.logButtons.logInButton,
-    );
-    headerContainer.append(logo, nav, buttonsContainer);
+    headerContainer.append(logo, nav, this.controlContainer);
     this.element.append(headerContainer);
   };
-
-  public update(subject: Subject): void {
-    if (subject instanceof ConcreteSubject && subject.state < 3) {
-      console.log('ConcreteObserverA: Reacted to the event.');
-    }
-  }
 }

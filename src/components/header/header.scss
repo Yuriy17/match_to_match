@@ -1,6 +1,6 @@
 @import '../../assets/stylesheets/abstract/_variables.scss';
 @import '../../assets/stylesheets/abstract/_mixins.scss';
-.buttons-container {
+.control-container {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -8,7 +8,7 @@
       flex-wrap: wrap;
 }
 
-.buttons-container > button + button {
+.control-container > button + button {
   margin-left: 10px;
 }
 header {

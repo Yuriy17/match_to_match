@@ -1,4 +1,5 @@
 import { PersonFields } from '../models/person-model';
+import { State } from '../utils/constant';
 
 function idbOK() {
   return 'indexedDB' in window
@@ -12,10 +13,7 @@ export default class CreateDatabase {
 
   peopleOS: IDBObjectStore;
 
-  protected isRegistered: boolean;
-
-  constructor(private setCurrentPerson: (props: PersonFields)=>void) {
-    this.isRegistered = false;
+  constructor(private setCurrentPerson: (props: PersonFields) => void) {
     this.init();
   }
 
@@ -52,7 +50,10 @@ export default class CreateDatabase {
     // $('#addPerson').on('click', this.addPerson);
   };
 
-  addPerson = (personFields: PersonFields): void => {
+  addPerson = (
+    personFields: PersonFields,
+    changeEntryState: (state: string) => void,
+  ): void => {
     // console.log(`About to add ${name}/${email}/${surname}/${photo}`);
 
     // Get a transaction
@@ -71,14 +72,17 @@ export default class CreateDatabase {
     };
 
     request.onsuccess = (): void => {
-      this.isRegistered = true;
+      changeEntryState(State.registered);
       console.log('Woot! Did it We are registered ( ͡° ͜ʖ ͡°)');
 
       this.setCurrentPerson(personFields);
     };
   };
 
-  getPerson = (email: string): void => {
+  getPerson = (
+    email: string,
+    changeEntryState: (state: string) => void,
+  ): void => {
     if (!email) return;
 
     const transaction = this.db.transaction(['people'], 'readonly');
@@ -89,9 +93,12 @@ export default class CreateDatabase {
     request.onsuccess = (event: Event): void => {
       const req = <IDBRequest>event.target;
       console.log(`Yeah! Did it We are logged in ʕ•ᴥ•ʔ
-        ${req.result}
+        ${JSON.stringify(req.result)}
       `);
       this.setCurrentPerson(req.result);
+      console.log(State.loggedIn);
+      console.dir(changeEntryState);
+      changeEntryState(State.loggedIn);
     };
 
     request.onerror = (event: Event): void => {

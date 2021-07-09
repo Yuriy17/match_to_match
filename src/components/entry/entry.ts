@@ -111,11 +111,12 @@ export default class Entry {
     };
 
     this.regModal = new Modal(this.createRegModal());
-    this.regModalForm = this.regModal.modalContent;
+    this.regModalForm = this.regModal?.modalContent;
     this.logInModal = new Modal(this.createLogInModal());
-    this.logInModalForm = this.regModal.modalContent;
+    this.logInModalForm = this.logInModal?.modalContent;
 
-    this.addFormValidation();
+    this.addLogInFormValidation();
+    this.addRegFormValidation();
   }
 
   validate = (
@@ -360,11 +361,10 @@ export default class Entry {
     }
   };
 
-  successPopup = (text = 'success!', surname: string, name: string): Modal => {
+  successPopup = (text = 'success!'): Modal => {
     const iconElement = createElement('i', ['fa', 'fa-check']);
     const textElement = createElement('p', ['modal-text']);
-    textElement.innerText = `${surname} ${name}!
-    ${text}`;
+    textElement.innerText = `${text}`;
     const containerElement = createElement('div', ['modal-container']);
     containerElement.append(iconElement, textElement);
     return new Modal({
@@ -378,11 +378,10 @@ export default class Entry {
     });
   };
 
-  addFormValidation = (): void => {
+  addRegFormValidation = (): void => {
     const {
-      regModalForm, regModal, logInModal, logInModalForm, successPopup,
+      regModalForm, regModal, successPopup,
     } = this;
-
     regModalForm.onsubmit = (event: Event): boolean => {
       const email = this.regEmailElement.value;
       const surname = this.regSurnameElement.value;
@@ -392,21 +391,17 @@ export default class Entry {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length && surname.length && name.length) {
-        this.addPerson(
-          {
-            email,
-            surname,
-            name,
-            photo: this.avatarLabel.classList.contains('loaded')
-              ? this.avatarImage.src
-              : null,
-            created: new Date().getTime(),
-          },
-        );
-        const modalS = successPopup(
-          'Success! You are registered!',
+        this.addPerson({
+          email,
           surname,
           name,
+          photo: this.avatarLabel.classList.contains('loaded')
+            ? this.avatarImage.src
+            : null,
+          created: new Date().getTime(),
+        });
+        const modalS = successPopup(
+          'Success! You are registered!',
         );
         regModal.jsModal.hide();
         modalS.jsModal.show();
@@ -415,9 +410,13 @@ export default class Entry {
       regModalForm.classList.add('was-validated');
       return false;
     };
-    console.log(logInModalForm);
+  };
+
+  addLogInFormValidation = (): void => {
+    const {
+      logInModal, logInModalForm, successPopup,
+    } = this;
     logInModalForm.onsubmit = (event: Event): boolean => {
-      console.log('aa');
       const email = this.logInEmailElement.value;
 
       if (!(<HTMLFormElement>logInModalForm).checkValidity()) {
@@ -425,11 +424,7 @@ export default class Entry {
         event.stopPropagation();
       } else if (email.length) {
         this.getPerson(email);
-        const modalS = successPopup(
-          'Success! You are logged in!',
-          this.surname,
-          this.name,
-        );
+        const modalS = successPopup('Success! You are logged in!');
         logInModal.jsModal.hide();
         modalS.jsModal.show();
       }
@@ -438,44 +433,4 @@ export default class Entry {
       return false;
     };
   };
-
-  // public get regEmail(): string {
-  //   return this.regEmailElement.value;
-  // }
-
-  // public set regEmail(value: string) {
-  //   this.regEmailElement.value = value;
-  // }
-
-  // public get logInEmail(): string {
-  //   return this.logInEmailElement.value;
-  // }
-
-  // public set logInEmail(value: string) {
-  //   this.logInEmailElement.value = value;
-  // }
-
-  // public get surname(): string {
-  //   return this.regSurnameElement.value;
-  // }
-
-  // public set surname(value: string) {
-  //   this.regSurnameElement.value = value;
-  // }
-
-  // public get name(): string {
-  //   return this.regNameElement.value;
-  // }
-
-  // public set name(value: string) {
-  //   this.regNameElement.value = value;
-  // }
-
-  // public get photo(): string {
-  //   return this._photo;
-  // }
-
-  // public set photo(value: string) {
-  //   this._photo = value;
-  // }
 }

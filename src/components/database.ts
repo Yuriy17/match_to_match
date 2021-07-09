@@ -72,7 +72,7 @@ export default class CreateDatabase {
 
     request.onsuccess = (): void => {
       this.isRegistered = true;
-      console.log(`Woot! Did it \n ${this.isRegistered}`);
+      console.log('Woot! Did it We are registered ( ͡° ͜ʖ ͡°)');
 
       this.setCurrentPerson(personFields);
     };
@@ -88,8 +88,9 @@ export default class CreateDatabase {
 
     request.onsuccess = (event: Event): void => {
       const req = <IDBRequest>event.target;
-      console.dir(req.result);
-      // const resultArr = Array.from(req.result);
+      console.log(`Yeah! Did it We are logged in ʕ•ᴥ•ʔ
+        ${req.result}
+      `);
       this.setCurrentPerson(req.result);
     };
 

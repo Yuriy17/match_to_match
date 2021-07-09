@@ -9,12 +9,6 @@ export default class Modal extends BaseComponent {
 
   modalContent: HTMLElement;
 
-  // public footer:HTMLElement;
-
-  // public header:HTMLElement;
-
-  // public body:HTMLElement;
-
   public readonly button: HTMLElement;
 
   constructor(properties: ModalConfig) {
@@ -22,7 +16,7 @@ export default class Modal extends BaseComponent {
       'div',
       ['modal', 'fade'],
       [
-        ['id', properties.id ? properties.id : 'temporaryId'],
+        ['id', properties.id || 'temporaryId'],
         ['data-bs-keyboard', 'false'],
         ['tabindex', '-1'],
         ['aria-labelledby', 'modalLabel'],
@@ -35,9 +29,10 @@ export default class Modal extends BaseComponent {
       this.createModal(
         properties.header,
         properties.body,
-        properties.isForm ? properties.isForm : false,
-        properties.size ? properties.size : 'lg',
-        properties.footer ? properties.footer : null,
+        properties.isForm || false,
+        properties.size || 'lg',
+        properties.footer || null,
+        properties.id || '',
       ),
     );
     this.element.append(modalFragment);
@@ -50,6 +45,7 @@ export default class Modal extends BaseComponent {
     isForm: boolean,
     size: string,
     footer?: { isSpaceBetween: boolean; elements: Array<HTMLElement> },
+    id?: string,
   ): HTMLElement => {
     const modalDialog = createElement('div', [
       'modal-dialog',
@@ -62,7 +58,10 @@ export default class Modal extends BaseComponent {
       ? createElement(
         'form',
         ['modal-content', 'needs-validation'],
-        [['novalidate', '']],
+        [
+          ['novalidate', ''],
+          ['id', `${id}Form` || ''],
+        ],
       )
       : createElement('div', ['modal-content']);
 

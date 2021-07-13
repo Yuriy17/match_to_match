@@ -1,7 +1,7 @@
 import BaseComponent from '../../components/base-component';
 
-export default class About extends BaseComponent {
+export default class Score extends BaseComponent {
   constructor() {
-    super('div', ['about']);
+    super('div', ['score']);
   }
 }

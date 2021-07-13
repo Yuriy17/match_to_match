@@ -22,3 +22,7 @@ export type EntryButtons = {
   logInButton: HTMLElement;
   logOutButton: HTMLElement;
 };
+
+export interface RouteLinks {
+  [k: string]: any;
+}

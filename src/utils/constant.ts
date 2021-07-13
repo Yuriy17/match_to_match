@@ -8,3 +8,9 @@ export const State = {
   loggedIn: 'loggedIn',
   registered: 'registered',
 };
+export const Pages = {
+  game: 'game',
+  about: 'about',
+  score: 'score',
+  settings: 'settings',
+};

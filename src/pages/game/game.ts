@@ -1,9 +1,10 @@
+import BaseComponent from '../../components/base-component';
+import CardsField from '../../components/card-field/card-field';
+import Card from '../../components/card/card';
+import Timer from '../../components/timer/timer';
+import { ImageCategoryModel } from '../../models/image-category-models';
 import delay from '../../shared/delay';
-import { addClass, removeClass } from '../../utils/utils';
-import BaseComponent from '../base-component';
-import CardsField from '../card-field/card-field';
-import Card from '../card/card';
-import Timer from '../timer/timer';
+import { addClass, createElement, removeClass } from '../../utils/utils';
 
 const FLIP_DELAY = 500;
 
@@ -18,17 +19,26 @@ export default class Game extends BaseComponent {
 
   private isPause = true;
 
+  private _gameButton: HTMLElement;
+
   constructor() {
     super('section', ['game', 'container']);
-    this.timer = new Timer(
-      this.pauseHandler,
-    );
+    this.timer = new Timer(this.pauseHandler);
     this.cardsField = new CardsField();
-    this.element.appendChild(this.timer.element);
-    this.element.appendChild(this.cardsField.element);
+    this._gameButton = this.createGameButton();
+    // this.start = this.start.bind(this);
   }
 
-  newGame(images: string[], bgImage: string):void {
+  private createGameButton(): HTMLElement {
+    const button = createElement('button', ['game-button', 'btn']);
+    button.innerText = 'Start Game';
+    button.addEventListener('click', () => this.start());
+    return button;
+  }
+
+  newGame(images: string[], bgImage: string): void {
+    this.element.appendChild(this.timer.element);
+    this.element.appendChild(this.cardsField.element);
     this.timer.clear();
     this.cardsField.clear();
     const sizedImages = images.slice(0, 5);
@@ -50,7 +60,7 @@ export default class Game extends BaseComponent {
     this.cardsField.addCards(cards);
   }
 
-  pauseHandler = ():void => {
+  pauseHandler = (): void => {
     if (this.isPause) {
       this.element.classList.add('game_on');
       this.isPause = false;
@@ -72,9 +82,7 @@ export default class Game extends BaseComponent {
   // }
 
   private async cardHandler(card: Card) {
-    if (this.isPause
-      || this.isAnimation
-      || !card.isFlipped) return;
+    if (this.isPause || this.isAnimation || !card.isFlipped) return;
 
     this.isAnimation = true;
 
@@ -97,5 +105,25 @@ export default class Game extends BaseComponent {
 
     this.activeCard = undefined;
     this.isAnimation = false;
+  }
+
+  async start(): Promise<void> {
+    const res = await fetch('./images.json');
+    const categories: ImageCategoryModel[] = await res.json();
+    const cat = categories[0];
+    const images = cat.images.map((name) => `${cat.category}/${name}`);
+    console.log(this);
+    console.log(images);
+    console.log(cat.bgImage);
+
+    this.newGame(images, cat.bgImage);
+  }
+
+  public get gameButton(): HTMLElement {
+    return this._gameButton;
+  }
+
+  public set gameButton(value: HTMLElement) {
+    this._gameButton = value;
   }
 }

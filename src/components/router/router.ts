@@ -11,14 +11,21 @@ export default class Router {
 
   timerId = 0;
 
+  public spaLinksArr: Element[];
+
   constructor() {
+    this.listen();
+  }
+
+  spaLinksInitialize():void {
     const spaLinks = document.querySelectorAll('a.spa-link');
+
     if (spaLinks) {
-      const spaLinksArr = [...spaLinks];
-      if (spaLinksArr.length) {
-        spaLinksArr.forEach((element: Element) => {
+      this.spaLinksArr = [...spaLinks];
+      if (this.spaLinksArr.length) {
+        this.spaLinksArr.forEach((element: Element) => {
           if (element instanceof HTMLElement) {
-            element.onclick = (e):boolean => {
+            element.onclick = (e): boolean => {
               const link = e.currentTarget as HTMLLinkElement;
               const href = link?.getAttribute('href');
               if (href !== null) {
@@ -30,15 +37,6 @@ export default class Router {
         });
       }
     }
-    // document.querySelectorAll('a').forEach((el) => {
-    //   el.addEventListener('click', ():boolean => {
-    //     alert('sd');
-    //     console.log('aaaaaa');
-
-    //     return false;
-    //   });
-    // });
-    this.listen();
   }
 
   add = (
@@ -92,6 +90,7 @@ export default class Router {
   interval = (): void => {
     if (this.current === this.getFragment()) return;
     this.current = this.getFragment();
+    // console.log(this.current);
 
     this.routes.some((route) => {
       const match = this.current.match(route.path);

@@ -71,13 +71,13 @@ export default class App {
   }
 
   init(): void {
-    this.headerNav.init();
     this.subject.attach(this.headerControl);
     this.initLayout();
     this.initRouter();
   }
 
   initLayout = (): void => {
+    this.headerNav.init();
     this.header.initLayout();
     this.footer.initLayout();
     this.goToPage(Pages.about);
@@ -91,12 +91,16 @@ export default class App {
   };
 
   initRouter = (): void => {
+    this.router.spaLinksInitialize();
     this.router
       .add(/about/, () => {
         alert('welcome in about page');
       })
       .add(/settings/, () => {
         alert('welcome in settings page');
+      })
+      .add(/score/, () => {
+        alert('welcome in score page');
       })
       .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
         alert(`products: ${id} specification: ${specification}`);

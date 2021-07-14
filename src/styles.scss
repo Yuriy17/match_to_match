@@ -93,7 +93,7 @@ body {
   border-radius: 3px;
   position: relative;
   cursor: pointer;
-  overflow-x: hidden;
+  overflow: hidden;
   color: rgb(66, 66, 66);
   transition:  color 0.4s ease-in-out;
   @include sunny(144%);

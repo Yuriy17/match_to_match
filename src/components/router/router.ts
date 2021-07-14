@@ -1,23 +1,25 @@
 type Route = {
   path: RegExp | string;
-  cb: (id: any, specification: any) => void;
+  cb: (match: string) => void;
 };
 export default class Router {
   routes: Array<Route> = [];
 
   root = '/';
 
-  current = '';
-
   timerId = 0;
 
   public spaLinksArr: Element[];
 
-  constructor() {
+  constructor(public current: string = '', public goToPage:(page:string)=>void) {}
+
+  init(): void {
+    this.goToPage(this.current);
     this.listen();
+    this.spaLinksInitialize();
   }
 
-  spaLinksInitialize():void {
+  spaLinksInitialize(): void {
     const spaLinks = document.querySelectorAll('a.spa-link');
 
     if (spaLinks) {
@@ -39,10 +41,7 @@ export default class Router {
     }
   }
 
-  add = (
-    path: RegExp | string,
-    cb: (id: number, specification: number) => void,
-  ): Router => {
+  add = (path: RegExp | string, cb: (match: string) => void): Router => {
     this.routes.push({ path, cb });
     return this;
   };
@@ -90,15 +89,13 @@ export default class Router {
   interval = (): void => {
     if (this.current === this.getFragment()) return;
     this.current = this.getFragment();
-    // console.log(this.current);
 
     this.routes.some((route) => {
       const match = this.current.match(route.path);
 
       if (match) {
-        match.shift();
-        // route.cb.apply({}, match);
-        return match;
+        route.cb(match[0]);
+        return match[0];
       }
       return false;
     });

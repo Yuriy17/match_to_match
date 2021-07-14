@@ -67,7 +67,9 @@ export default class App {
     this.header = new Header(this.headerControl.element, this.headerNav.element);
     this.main = createElement('main', ['main']);
     this.about = new About();
-    this.router = new Router();
+    this.settings = new Settings();
+    this.score = new Score();
+    this.router = new Router(Pages.about, this.goToPage);
   }
 
   init(): void {
@@ -80,7 +82,6 @@ export default class App {
     this.headerNav.init();
     this.header.initLayout();
     this.footer.initLayout();
-    this.goToPage(Pages.about);
     this.rootElement.append(
       this.header.element,
       this.main,
@@ -91,29 +92,31 @@ export default class App {
   };
 
   initRouter = (): void => {
-    this.router.spaLinksInitialize();
+    this.router.init();
+
     this.router
-      .add(/about/, () => {
-        alert('welcome in about page');
+      .add(/about/, (match: string) => {
+        console.log(`Welcome in ${match} page (ᵔᴥᵔ)`);
+        this.goToPage(Pages.about);
       })
-      .add(/settings/, () => {
-        alert('welcome in settings page');
+      .add(/settings/, (match: string) => {
+        console.log(`Welcome in ${match} page ◉_◉`);
+        this.goToPage(Pages.settings);
       })
-      .add(/score/, () => {
-        alert('welcome in score page');
-      })
-      .add(/products\/(.*)\/specification\/(.*)/, (id, specification) => {
-        alert(`products: ${id} specification: ${specification}`);
+      .add(/score/, (match: string) => {
+        console.log(`Welcome in ${match} page (¬‿¬)`);
+        this.goToPage(Pages.score);
       })
       .add('', () => {
-        // general controller
         console.log('welcome in catch all controller');
+        this.goToPage(Pages.about);
       });
   };
 
-  public goToPage(page: string): void {
+  goToPage = (page: string): void => {
     const { main, router } = this;
     const { routeLinks } = this.headerNav;
+
     main.innerHTML = '';
     Object.keys(routeLinks).forEach((link: string) => routeLinks[link].classList.remove('nav__link_active'));
     switch (page) {
@@ -139,5 +142,5 @@ export default class App {
       default:
         break;
     }
-  }
+  };
 }

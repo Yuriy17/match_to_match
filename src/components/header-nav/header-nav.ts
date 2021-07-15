@@ -10,7 +10,7 @@ export default class HeaderNav extends BaseComponent {
   };
 
   constructor() {
-    super('nav', ['nav']);
+    super('nav', ['nav', 'header__item']);
     this.routeLinks = {
       aboutLink: createElement(
         'a',

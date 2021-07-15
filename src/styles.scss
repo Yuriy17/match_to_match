@@ -34,25 +34,33 @@ body {
 
 .logo {
   display: block;
-  margin: 0px 8% 0 0;
+  margin: 0px 0 0 0;
+  svg {
+    width: 2rem;
+    height: 1.6rem;
+  }
 }
 
 .nav {
   display: flex;
-
+  @include media(md) {
+    flex-wrap: nowrap;
+  }
   // .nav__link
 
   &__link {
     display: flex;
     align-items: center;
     padding: 4px 14px;
-    border-right: 1px solid #000;
-    background: rgba(0, 0, 0, 0.11);
-    &:first-child {
-      border-left: 1px solid #000;
+    border-radius: 6px;;
+
+    border: 1px solid transparent;
+    transition: all 0.1s ease-in-out;
+    & + & {
+          margin-left: 6px;
     }
     &:hover {
-      background: rgba(0, 0, 0, 0.31);
+      border: 1px solid #da982b;
     }
   }
   &__link, &__text {
@@ -120,4 +128,7 @@ body {
   -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
       box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+a.spa-link.nav__link.nav__link_active {
+    border: 1px solid #da982b;
 }

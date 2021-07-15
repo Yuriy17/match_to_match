@@ -1,19 +1,28 @@
 import { EntryButtons } from '../../models/elements-model';
 import { Observer, Subject } from '../../models/patterns-model';
 import { State } from '../../utils/constant';
-import { createElement } from '../../utils/utils';
+import { createElement, getRandomInt } from '../../utils/utils';
 import BaseComponent from '../base-component';
 import ConcreteSubject from '../concrete-subject';
+import './header-control.scss';
+
+const defaultAvatarImages = [
+  'images/default-avatars/jaina.png',
+  'images/default-avatars/man.png',
+  'images/default-avatars/molot.png',
+  'images/default-avatars/murloc.png',
+  'images/default-avatars/paladin.png',
+  'images/default-avatars/thief.png',
+];
 
 export default class HeaderControl extends BaseComponent implements Observer {
-  // logButtons: EntryButtons;
-
   constructor(
     private logButtons: EntryButtons,
-    private photo: string,
+    private getPhoto: () => string,
     private gameButton: HTMLElement,
+    private resetPerson: () => void,
   ) {
-    super('div', ['control-container']);
+    super('div', ['control-container', 'header__item']);
     this.element.append(this.logButtons.regButton, this.logButtons.logInButton);
   }
 
@@ -24,6 +33,8 @@ export default class HeaderControl extends BaseComponent implements Observer {
       } else if (subject.state === State.loggedIn) {
         this.afterLogIn();
       } else if (subject.state === State.registered) {
+        console.log(1);
+
         this.afterLogIn();
       }
     }
@@ -31,11 +42,15 @@ export default class HeaderControl extends BaseComponent implements Observer {
 
   private afterLogIn() {
     const photo = createElement('div', ['log-photo']);
+    const photoSrc = this.getPhoto();
     const photoImage = createElement(
       'img',
       ['log-photo__image'],
       [
-        ['src', this.photo],
+        [
+          'src',
+          photoSrc || defaultAvatarImages[getRandomInt(defaultAvatarImages.length)],
+        ],
         ['alt', 'photo'],
       ],
     );
@@ -47,10 +62,11 @@ export default class HeaderControl extends BaseComponent implements Observer {
   }
 
   private afterLogOut() {
+    this.resetPerson();
     this.element.innerHTML = '';
     this.element.append(
       this.logButtons.regButton,
-      this.logButtons.logOutButton,
+      this.logButtons.logInButton,
     );
   }
 }

@@ -1,7 +1,7 @@
 import { EntryButtons, ModalConfig } from '../../models/elements-model';
 import { PersonFields } from '../../models/person-model';
 /* eslint-disable no-control-regex */
-import { BootstrapType } from '../../utils/constant';
+import { BootstrapType, State } from '../../utils/constant';
 import { createElement, createImageElement } from '../../utils/utils';
 import BootstrapComponent from '../bootstrap-component/bootstrap-component';
 import Modal from '../modal/modal';
@@ -99,18 +99,24 @@ export default class Entry {
   constructor(
     private addPerson: (
       personFields: PersonFields,
-      changeEntryState: (state: string) => void
+      successCallback: (personFields: PersonFields) => void,
+      errorCallback: () => void
     ) => void,
     private getPerson: (
       email: string,
-      changeEntryState: (state: string) => void
+      successCallback: (personFields: PersonFields) => void,
+      errorCallback: () => void
     ) => void,
     private changeEntryState: (state: string) => void,
+    public setCurrentPerson: (props: PersonFields) => void,
   ) {
+    const logOutButton = createElement('button', ['auth-button']);
+    logOutButton.innerText = 'log out';
+    logOutButton.addEventListener('click', () => changeEntryState(State.loggedOut));
     this.buttonElements = {
       regButton: this.createLink(this.regId, 'register new player'),
       logInButton: this.createLink(this.logInId, 'log in'),
-      logOutButton: this.createLink('logOut', 'log out'),
+      logOutButton,
     };
 
     this.regModal = new Modal(this.createRegModal());
@@ -402,11 +408,18 @@ export default class Entry {
               : null,
             created: new Date().getTime(),
           },
-          this.changeEntryState,
+          (personFields: PersonFields) => {
+            this.setCurrentPerson(personFields);
+            this.changeEntryState(State.registered);
+            const modalS = successPopup('Success! You are registered!');
+            regModal.jsModal.hide();
+            modalS.jsModal.show();
+            console.log('Woot! Did it We are registered ( ͡° ͜ʖ ͡°)');
+          },
+          () => {
+            console.log("'Error' ಠ~ಠ");
+          },
         );
-        const modalS = successPopup('Success! You are registered!');
-        regModal.jsModal.hide();
-        modalS.jsModal.show();
       }
 
       regModalForm.classList.add('was-validated');
@@ -423,10 +436,30 @@ export default class Entry {
         event.preventDefault();
         event.stopPropagation();
       } else if (email.length) {
-        this.getPerson(email, this.changeEntryState);
-        const modalS = successPopup('Success! You are logged in!');
-        logInModal.jsModal.hide();
-        modalS.jsModal.show();
+        this.getPerson(
+          email,
+          (result: PersonFields) => {
+            this.setCurrentPerson(result);
+            this.changeEntryState(State.loggedIn);
+            const modalS = successPopup('Success! You are logged in!');
+            logInModal.jsModal.hide();
+            modalS.jsModal.show();
+          },
+          () => {
+            const rowMessage = this.logInModalForm.querySelector('.row-message');
+            if (!rowMessage) {
+              const container = this.logInModalForm.querySelector(
+                '.modal-body > .container',
+              );
+              const row = createElement('div', ['row', 'row-message']);
+              const errorText = createElement('span', ['invalid-feedback']);
+
+              errorText.innerText = "Ooops, we couldn't find you ಠ~ಠ, check your password or try register again";
+              row.append(errorText);
+              container.append(row);
+            }
+          },
+        );
       }
 
       logInModalForm.classList.add('was-validated');

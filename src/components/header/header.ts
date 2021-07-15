@@ -12,7 +12,11 @@ export default class Header extends BaseComponent {
 
   initLayout = (): void => {
     const logoIcon = createElement('i', ['fa', 'fa-warehouse']);
-    const logo = createElement('a', ['spa-link', 'logo'], [['href', '/']]);
+    const logo = createElement(
+      'a',
+      ['spa-link', 'logo', 'header__item'],
+      [['href', '/']],
+    );
     const headerContainer = createElement('div', ['header__container']);
 
     logo.append(logoIcon);

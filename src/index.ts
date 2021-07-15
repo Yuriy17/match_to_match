@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/comma-dangle */
 import { dom, library } from '@fortawesome/fontawesome-svg-core';
 import {
   faCheck,

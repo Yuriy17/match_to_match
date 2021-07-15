@@ -1,16 +1,6 @@
 @import '../../assets/stylesheets/abstract/_variables.scss';
 @import '../../assets/stylesheets/abstract/_mixins.scss';
-.control-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-}
 
-.control-container > button + button {
-  margin-left: 10px;
-}
 header {
   -webkit-box-shadow: 0px 5px 5px -5px rgb(34 60 80 / 60%);
   -moz-box-shadow: 0px 5px 5px -5px rgba(34, 60, 80, 0.6);
@@ -38,11 +28,24 @@ header {
     align-items: center;
     width: 100%;
     min-height: inherit;
-    padding: 0 3vw;
+    padding: 5px 3vw;
     flex-direction: column;
     @include media(md) {
       flex-direction: row;
       justify-content: space-between;
     }
+  }
+
+  &__item {
+      flex-basis: calc(100% / 3);
+      &.logo {
+        justify-content: flex-start;
+      }
+      &.control-container {
+        justify-content: flex-end;
+      }
+      &.nav {
+        justify-content: center;
+      }
   }
 }

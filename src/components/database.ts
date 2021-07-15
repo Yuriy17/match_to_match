@@ -1,5 +1,4 @@
 import { PersonFields } from '../models/person-model';
-import { State } from '../utils/constant';
 
 function idbOK() {
   return 'indexedDB' in window
@@ -13,7 +12,7 @@ export default class CreateDatabase {
 
   peopleOS: IDBObjectStore;
 
-  constructor(private setCurrentPerson: (props: PersonFields) => void) {
+  constructor() {
     this.init();
   }
 
@@ -52,7 +51,8 @@ export default class CreateDatabase {
 
   addPerson = (
     personFields: PersonFields,
-    changeEntryState: (state: string) => void,
+    successCallback: (props: PersonFields) => void,
+    errorCallback: () => void,
   ): void => {
     // console.log(`About to add ${name}/${email}/${surname}/${photo}`);
 
@@ -68,20 +68,19 @@ export default class CreateDatabase {
     request.onerror = (e: Event): void => {
       const req = <IDBRequest>e.target;
       console.log('Error', req.error.name);
+      errorCallback();
       // some type of error handler
     };
 
     request.onsuccess = (): void => {
-      changeEntryState(State.registered);
-      console.log('Woot! Did it We are registered ( ͡° ͜ʖ ͡°)');
-
-      this.setCurrentPerson(personFields);
+      successCallback(personFields);
     };
   };
 
   getPerson = (
     email: string,
-    changeEntryState: (state: string) => void,
+    successCallback: (personFields: PersonFields) => void,
+    errorCallback: () => void,
   ): void => {
     if (!email) return;
 
@@ -92,13 +91,12 @@ export default class CreateDatabase {
 
     request.onsuccess = (event: Event): void => {
       const req = <IDBRequest>event.target;
-      console.log(`Yeah! Did it We are logged in ʕ•ᴥ•ʔ
-        ${JSON.stringify(req.result)}
-      `);
-      this.setCurrentPerson(req.result);
-      console.log(State.loggedIn);
-      console.dir(changeEntryState);
-      changeEntryState(State.loggedIn);
+      if (req && req.result) {
+        console.log(`Yeah! Did it We are logged in ʕ•ᴥ•ʔ - ${req.result.name}`);
+        successCallback(req.result);
+      } else {
+        errorCallback();
+      }
     };
 
     request.onerror = (event: Event): void => {

@@ -4,6 +4,7 @@ import Card from '../../components/card/card';
 import Timer from '../../components/timer/timer';
 import { ImageCategoryModel } from '../../models/image-category-models';
 import delay from '../../shared/delay';
+import { Pages } from '../../utils/constant';
 import { addClass, createElement, removeClass } from '../../utils/utils';
 
 const FLIP_DELAY = 500;
@@ -21,7 +22,7 @@ export default class Game extends BaseComponent {
 
   private _gameButton: HTMLElement;
 
-  constructor() {
+  constructor(public goToPage: (page: string) => void) {
     super('section', ['game', 'container']);
     this.timer = new Timer(this.pauseHandler);
     this.cardsField = new CardsField();
@@ -117,6 +118,7 @@ export default class Game extends BaseComponent {
     console.log(cat.bgImage);
 
     this.newGame(images, cat.bgImage);
+    this.goToPage(Pages.game);
   }
 
   public get gameButton(): HTMLElement {

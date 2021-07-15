@@ -45,3 +45,10 @@
   }
 }
 
+.row-message {
+  margin-top: 20px;
+  .invalid-feedback {
+    font-size: 16px;
+    display: block;
+  }
+}

@@ -47,21 +47,23 @@ export default class App {
   private elements: Elements = {};
 
   constructor(private readonly rootElement: HTMLElement) {
-    this.game = new Game();
+    this.game = new Game(this.goToPage);
     this.currentPerson = new CurrentPerson();
 
-    this.database = new Database(this.currentPerson.setCurrentPerson);
+    this.database = new Database();
     this.subject = new ConcreteSubject();
     this.entry = new Entry(
       this.database.addPerson,
       this.database.getPerson,
       this.subject.changeEntryState,
+      this.currentPerson.setCurrentPerson,
     );
     this.footer = new Footer();
     this.headerControl = new HeaderControl(
       this.entry.buttonElements,
-      this.currentPerson.photo,
+      this.currentPerson.getPhoto,
       this.game.gameButton,
+      this.currentPerson.reset,
     );
     this.headerNav = new HeaderNav();
     this.header = new Header(this.headerControl.element, this.headerNav.element);
@@ -109,7 +111,7 @@ export default class App {
       })
       .add('', () => {
         console.log('welcome in catch all controller');
-        this.goToPage(Pages.about);
+        // this.goToPage(Pages.about);
       });
   };
 

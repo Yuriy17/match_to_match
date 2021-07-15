@@ -11,53 +11,56 @@ export default class CurrentPerson {
 
   private _created: number;
 
-  setCurrentPerson(
-    props: PersonFields,
-  ): void {
+  setCurrentPerson = (props: PersonFields): void => {
     this._email = props.email;
     this._name = props.name;
     this._surname = props.surname;
     this._photo = props.photo;
     this._created = props.created;
-  }
+  };
 
-  public get photo(): string {
-    return this._photo;
-  }
+  reset = ():void => {
+    this._email = null;
+    this._name = null;
+    this._surname = null;
+    this._photo = null;
+    this._created = null;
+    console.log(
+      this._email,
+      this._name,
+      this._surname,
+      this._photo,
+      this._created,
+    );
+  };
 
-  public set photo(value: string) {
+  getPhoto = (): string => this._photo;
+
+  setPhoto = (value: string): void => {
     this._photo = value;
-  }
+  };
 
-  public get surname(): string {
-    return this._surname;
-  }
+  getSurname = (): string => this._surname;
 
-  public set surname(value: string) {
+  setSurname = (value: string): void => {
     this._surname = value;
-  }
+  };
 
-  public get name(): string {
-    return this._name;
-  }
+  getName = (): string => this._name;
 
-  public set name(value: string) {
+  setName = (value: string): void => {
     this._name = value;
-  }
+  };
 
-  public get email(): string {
-    return this._email;
-  }
+  getEmail = (): string => this._email;
 
-  public set email(value: string) {
+  setEmail = (value: string): void => {
     this._email = value;
-  }
+  };
 
-  public get created(): number {
-    return this._created;
-  }
+  getCreated = (): number => this._created;
 
-  public set created(value: number) {
+  setCreated = (value: number): void => {
     this._created = value;
-  }
+  };
 }

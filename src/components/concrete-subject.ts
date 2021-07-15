@@ -57,7 +57,6 @@ export default class ConcreteSubject implements Subject {
    * Запуск обновления в каждом подписчике.
    */
   public notify(): void {
-    console.log('Subject: Notifying observers...');
     this.observers.forEach((observer) => observer.update(this));
     // for (const observer of this.observers) {
     //   observer.update(this);
@@ -72,7 +71,6 @@ export default class ConcreteSubject implements Subject {
    */
   changeEntryState = (state: string): void => {
     this.state = state;
-
     console.log(`Subject: My state has just changed to: ${this.state}`);
     this.notify();
   };

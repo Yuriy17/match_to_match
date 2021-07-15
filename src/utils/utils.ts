@@ -1,4 +1,3 @@
-
 export const createElement = (
   tag: keyof HTMLElementTagNameMap = 'div',
   styles: string[] = [],
@@ -31,6 +30,7 @@ export const toggleClass = (
   elements: Array<HTMLElement>, style: string,
 ):void => elements.forEach((element) => element.classList.toggle(style));
 
+export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
 // export const errorPopup = ():void => {
 //   const modal = new Modal({
 //       id: this.id,

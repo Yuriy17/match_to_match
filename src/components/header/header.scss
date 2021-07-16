@@ -12,8 +12,11 @@ header {
   &,
   .footer-text {
     color: #fff;
-    a {
+    a, a:hover{
       color: #da982b;
+    }
+    a:hover {
+      color: #fff;
     }
   }
 

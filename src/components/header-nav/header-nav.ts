@@ -1,4 +1,5 @@
 import { RouteLinks } from '../../models/elements-model';
+import { Icons } from '../../utils/constant';
 import { createElement } from '../../utils/utils';
 import BaseComponent from '../base-component';
 
@@ -38,9 +39,9 @@ export default class HeaderNav extends BaseComponent {
     const navAboutText = createElement('span', ['nav__text']);
     const navSettingsText = createElement('span', ['nav__text']);
     const navScoreText = createElement('span', ['nav__text']);
-    const scoreIcon = createElement('i', ['fa', 'fa-trophy']);
-    const settingsIcon = createElement('i', ['fa', 'fa-cog']);
-    const aboutIcon = createElement('i', ['fa', 'fa-question']);
+    const scoreIcon = createElement('i', ['fa', Icons.faTrophy]);
+    const settingsIcon = createElement('i', ['fa', Icons.faCog]);
+    const aboutIcon = createElement('i', ['fa', Icons.faQuestion]);
 
     navAboutIcon.append(aboutIcon);
     navSettingsIcon.append(settingsIcon);

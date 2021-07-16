@@ -31,6 +31,27 @@ export const toggleClass = (
 ):void => elements.forEach((element) => element.classList.toggle(style));
 
 export const getRandomInt = (max: number) => Math.floor(Math.random() * max);
+
+export const clearInputFile = (f: any) => {
+  if (f.value) {
+    try {
+      // eslint-disable-next-line no-param-reassign
+      f.value = ''; // for IE11, latest Chrome/Firefox/Opera...
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+    if (f.value) {
+      // for IE5 ~ IE10
+      const form = document.createElement('form');
+      const { parentNode } = f;
+      const ref = f.nextSibling;
+      form.appendChild(f);
+      form.reset();
+      parentNode.insertBefore(f, ref);
+    }
+  }
+};
 // export const errorPopup = ():void => {
 //   const modal = new Modal({
 //       id: this.id,

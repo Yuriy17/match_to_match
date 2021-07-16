@@ -29,10 +29,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+  }
+  &#successPopup {
     svg {
       font-size: 6rem;
       & > path {
         fill: green;
+      }
+    }
+  }
+  &#errorPopup {
+    svg {
+      font-size: 6rem;
+      & > path {
+        fill: red;
+      }
+    }
+  }
+  &#infoPopup {
+    svg {
+      font-size: 6rem;
+      & > path {
+        fill: blue;
       }
     }
   }

@@ -88,8 +88,8 @@ export default class App {
       this.header.element,
       this.main,
       this.footer.element,
-      this.entry.regModal.element,
-      this.entry.logInModal.element,
+      this.entry.regForm.modal.element,
+      this.entry.logInForm.modal.element,
     );
   };
 

@@ -27,17 +27,17 @@ export default class Entry {
   buttonElements: EntryButtons;
 
   constructor(
-    private addPerson: (
+    addPerson: (
       personFields: PersonFields,
       successCallback: (personFields: PersonFields) => void,
       errorCallback: () => void
     ) => void,
-    private getPerson: (
+    getPerson: (
       email: string,
       successCallback: (personFields: PersonFields) => void,
       errorCallback: () => void
     ) => void,
-    private changeEntryState: (state: string) => void,
+    changeEntryState: (state: string) => void,
     public setCurrentPerson: (props: PersonFields) => void,
   ) {
     const logOutButton = createElement('button', ['auth-button']);

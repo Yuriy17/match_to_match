@@ -1,6 +1,3 @@
-export type Elements = {
-  [key: string]: any,
-};
 export interface ModalConfig {
   id: string;
   body: {
@@ -16,6 +13,7 @@ export interface ModalConfig {
   isLink?: boolean;
   isForm?: boolean;
   size?: string;
+  isExample?: boolean;
 }
 export type EntryButtons = {
   regButton: HTMLElement;

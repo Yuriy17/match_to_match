@@ -82,6 +82,8 @@ export default class RegForm {
     this.addRegFormValidation();
   }
 
+  getExample = (): Node => this.modalForm.cloneNode(true);
+
   addRegFormValidation = (): void => {
     const { modalForm: regModalForm, modal: regModal, successPopup } = this;
     regModalForm.onsubmit = (event: Event): boolean => {

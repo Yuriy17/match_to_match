@@ -1,0 +1,61 @@
+.about {
+
+		// .about__list
+
+		&__list {
+      counter-reset: my-awesome-counter;
+      list-style: none;
+      padding: 0;
+		}
+
+		// .about__item
+
+		&__item {
+      counter-increment: my-awesome-counter;
+      position: relative;
+      margin: 0 0 12px;
+      &::before {
+        content: counter(my-awesome-counter);
+        color: #fcd000;
+        font-size: 1.5rem;
+        font-weight: bold;
+        position: absolute;
+        --size: 32px;
+        left: calc(-1 * var(--size) + 51px);
+        line-height: var(--size);
+        width: var(--size);
+        height: var(--size);
+        top: 12px;
+        transform: rotate(-10deg);
+        background: black;
+        border-radius: 50%;
+        text-align: center;
+        box-shadow: 1px 1px 0 #999;
+      }
+		}
+}
+
+.entry-step {
+}
+.step {
+
+		// .step__block
+
+		&__block {
+      background-color: #fff;
+      border-radius: 15px;
+      padding: 15px 15px 15px 65px;
+		}
+
+		// .step__text
+
+		&__text {
+      font-size: 18px;
+		}
+}
+
+.settings-step {
+}
+
+.game-step {
+}

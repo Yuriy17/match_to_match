@@ -1,4 +1,3 @@
-import { Elements } from '../models/elements-model';
 import About from '../pages/about/about';
 import Game from '../pages/game/game';
 import Score from '../pages/score/score';
@@ -44,8 +43,6 @@ export default class App {
 
   private readonly currentPerson: CurrentPerson;
 
-  private elements: Elements = {};
-
   constructor(private readonly rootElement: HTMLElement) {
     this.game = new Game(this.goToPage);
     this.currentPerson = new CurrentPerson();
@@ -68,7 +65,10 @@ export default class App {
     this.headerNav = new HeaderNav();
     this.header = new Header(this.headerControl.element, this.headerNav.element);
     this.main = createElement('main', ['main']);
-    this.about = new About();
+    this.about = new About(
+      this.entry.regForm.getExample,
+      this.entry.logInForm.getExample,
+    );
     this.settings = new Settings();
     this.score = new Score();
     this.router = new Router(Pages.about, this.goToPage);

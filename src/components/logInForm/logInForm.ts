@@ -42,6 +42,8 @@ export default class LogInForm {
     this.addLogInFormValidation();
   }
 
+  getExample = ():Node => this.modalForm.cloneNode(true);
+
   addLogInFormValidation = (): void => {
     const { modal: logInModal, modalForm: logInModalForm, successPopup } = this;
     logInModalForm.onsubmit = (event: Event): boolean => {

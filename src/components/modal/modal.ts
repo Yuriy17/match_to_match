@@ -36,7 +36,7 @@ export default class Modal extends BaseComponent {
       ),
     );
     this.element.append(modalFragment);
-    this.jsModal = new BootstrapModal(this.element);
+    this.jsModal = properties.isExample ? null : new BootstrapModal(this.element);
   }
 
   createModal = (
